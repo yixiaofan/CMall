@@ -24,10 +24,11 @@
 	2.在main.js中import iView from 'iview' 
 		import 'iview/dist/styles/iview.css'    Vue.use(iView)
 
-
+右键菜单使用组件
+	cnpm i vue-right-menu --save-dev
 上传图片使用组件
-	使用前先安装：cnpm install less-loader less --save-dev
 	cnpm i vue-easy-uploader --save
+	安装依赖：cnpm install less-loader less --save-dev
 富文本编辑器使用组件
 	cnpm install vue-quill-editor --save
 	安装依赖：cnpm install quill --save

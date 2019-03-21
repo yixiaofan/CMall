@@ -11,7 +11,10 @@ import VueCookie from 'vue-cookie'
 import uploader from 'vue-easy-uploader'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
+import MySpan from './components/myspan'
 
+
+Vue.use(MySpan)
 Vue.use(iView)
 Vue.use(VueCookie)
 Vue.prototype.$axios=Axios;
@@ -30,7 +33,8 @@ let store =new Vuex.Store({
 		page_totalpage:'',
 		img_upload_cache: [],
 		img_paths: [],
-		img_status: 'ready'
+		img_status: 'ready',
+		select_class:''
 	},
 	mutations:{
 		s_flagChange(state) {
@@ -50,6 +54,9 @@ let store =new Vuex.Store({
 		},
 		set_img_status (state, arg) {
 		    state.img_status = arg
+		},
+		set_select_class(state, arg){
+			state.select_class=arg;
 		}
 	}
 })

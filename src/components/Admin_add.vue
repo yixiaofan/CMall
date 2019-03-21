@@ -3,7 +3,8 @@
 		<div class="form-horizontal" v-for="item in items">
 			<div class="form-group" v-if="item.type=='button'">
 			    <label :for="item.id" class="control-label col-xs-1">{{item.label}}</label>
-			    <button class="btn btn-sm" :id="item.id" data-toggle="modal" :data-target="item.argetId">{{item.text}}</button>
+			    <button class="btn btn-sm" :id="item.id" @click="childMethod(item.method)">{{item.text}}</button>
+			    <label v-if="item.select">{{$store.state.select_class}}</label>
 			</div>
 			<div class="form-group" v-else-if="item.type=='input'">
 			    <label :for="item.id" class="control-label col-xs-1">{{item.label}}</label>
@@ -57,7 +58,7 @@ export default {
 	},
 	computed: {
       editor () {
-        return this.$refs.myquillEditor.quill;
+        return this.$refs.myquillEditor[0].quill;
       }
     },
 	methods:{
@@ -66,10 +67,12 @@ export default {
         onEditorFocus(){//获得焦点事件
         },
         onEditorChange(){//内容改变事件
+        },
+        childMethod(method){
+        	this.$emit(method);
         }
   	},
 	mounted(){
-		console.log(this.editor);
 		this.editor.container.style.height = '150px';
 //		const postUrl = "/cmall_item_api/item?id="+itemId;
 //	    this.$axios.post(postUrl)

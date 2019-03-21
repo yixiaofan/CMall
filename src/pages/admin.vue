@@ -39,10 +39,10 @@
 						<div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
 							<ul class="admin-sidebar-sub">
 								<li>
-									<div class="panel-text" @click="changeColor($event);addTab('5','内容分类管理','./content-category.html',true)">内容分类管理</div>
+									<div class="panel-text" @click="changeColor($event);changePage('ContentCategory')">内容分类管理</div>
 								</li>
 								<li>
-									<div class="panel-text" @click="changeColor($event);addTab('6','内容管理','./content.html',true)">内容管理</div>
+									<div class="panel-text" @click="changeColor($event);changePage('Content')">内容管理</div>
 								</li>
 							</ul>
 						</div>
@@ -55,7 +55,6 @@
 				<div style="margin: 10px;" :is="component"></div>
 			</keep-alive>
 		</div>
-		<GoodsPic/>
 	</div>
 </template>
 
@@ -64,7 +63,8 @@ import Index from "./adminRight/index"
 import AddGoods from "./adminRight/addGoods"
 import SearchGoods from "./adminRight/searchGoods"
 import ParamList from "./adminRight/paramList"
-import GoodsPic from "../components/Goods_pic"
+import ContentCategory from "./adminRight/contentCategory"
+import Content from "./adminRight/content"
 
 export default {
 	data(){
@@ -78,7 +78,8 @@ export default {
 		AddGoods,
 		SearchGoods,
 		ParamList,
-		GoodsPic
+		ContentCategory,
+		Content
 	},
 	methods:{
 		changeColor(event){

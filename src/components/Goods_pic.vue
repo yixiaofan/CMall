@@ -1,19 +1,7 @@
 <template lang="html">
-	<div class="modal fade bs-example-modal-sm" id="goodsPicPage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
-		    <div class="modal-content">
-			    <div class="modal-header">
-			    	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			    	<h4 class="modal-title">批量图片上传</h4>
-			    </div>
-			    <div class="modal-body">
-			    	<div>
-					    <uploader url="http://cn.ynhdkc.com/admin/uploadapiv2/uploadpics"></uploader>
-					    <div class="btn-upload" @click="upload">上传</div>
-					</div>
-			    </div>
-		    </div>
-		</div>
+	<div>
+	    <uploader url="http://cn.ynhdkc.com/admin/uploadapiv2/uploadpics"></uploader>
+	    <div class="btn-upload" @click="upload">上传</div>
 	</div>
 </template>
 
@@ -59,22 +47,6 @@ export default {
 </script>
 
 <style scoped lang="css">
-.modal-dialog{
-	margin-top: calc(50vh - 190px);
-	margin-bottom: 0px;
-}
-.modal-title{
-	font-weight: bold;
-	margin: 0px 30px;
-	text-align: center;
-	font-size: 18px;
-}
-.close{
-	line-height: 25px;
-}
-.modal-header{
-	padding: 5px 15px;
-}
 .btn-upload{
 	width: 100%;
   	height: 3em;

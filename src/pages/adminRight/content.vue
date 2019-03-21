@@ -1,26 +1,27 @@
 <template lang="html">
-	<div class="searchGoods">
-		<AdminTable title="查询商品" :body="pBody" :columns="pColumns" :tableData="pTableData"></AdminTable>
+	<div class="content">
+		<Split v-model="split1">
+            <div slot="left" class="demo-split-pane">
+                Left Pane
+            </div>
+            <div slot="right" class="demo-split-pane">
+                <AdminTable ref="table" title="" :body="pBody" :columns="pColumns" :tableData="pTableData"></AdminTable>
+            </div>
+        </Split>
 	</div>
 </template>
 
 <script>
 import AdminTable from "../../components/admin_table"
-	
+
 export default {
-	data(){
-		return{
-			pBody:[{css:"glyphicon glyphicon-plus",text:"新增"},
-			{css:"glyphicon glyphicon-pencil",text:"编辑"},
-			{css:"glyphicon glyphicon-remove",text:"删除"},
-			{css:"glyphicon glyphicon-minus",text:"下架"},
-			{css:"glyphicon glyphicon-minus",text:"上架"}],
+	data () {
+        return {
+            split1: 0.2,
+            pBody:[{css:"glyphicon glyphicon-plus",text:"新增",func:()=>{this.$refs.table.changeModal()}},
+			{css:"glyphicon glyphicon-pencil",text:"编辑",func:function(){alert("222");}},
+			{css:"glyphicon glyphicon-remove",text:"删除",func:function(){alert("333");}}],
 			pColumns: [
-                {
-                    type: 'selection',
-                    width: 50,
-                    align: 'center'
-                },
                 {
                     title: 'Name',
                     key: 'name',
@@ -63,30 +64,20 @@ export default {
                     date: '2016-10-04'
                 }
             ]
-		}
-	},
-	components:{
+        }
+   	},
+   	components:{
 		AdminTable
-	},
-	methods:{
-		
-	},
-	mounted(){
-//		const postUrl = "/cmall_item_api/item?id="+itemId;
-//	    this.$axios.post(postUrl)
-//	      .then(res => {
-//	      	let newData=eval(res.data.substring(4));
-//	      	that.item=newData;
-//	      	that.pic=that.item.images[0];
-//	        console.log(newData);
-//	      })
-//	      .catch(error => {
-//	        console.log(error);
-//	      })
 	}
 }
 </script>
 
 <style scoped lang="css">
-
+.content{
+    height: 500px;
+    border: 1px solid #dcdee2;
+}
+.demo-split-pane{
+    padding: 10px;
+}
 </style>

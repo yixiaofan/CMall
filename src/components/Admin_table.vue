@@ -4,29 +4,12 @@
 			<h3 class="panel-title">{{title}}</h3>
 		</div>
 		<div class="panel-body">
-			<button class="btn btn-sm btn-info" v-for="(b,index) in body" @click="b.func"><i :class="b.css"></i> {{b.text}}</button>
+			<button class="btn btn-sm btn-info" v-for="(b,index) in body" @click="childMethod(b.method)"><i :class="b.css"></i> {{b.text}}</button>
 		</div>
-		<table class="table table-bordered table-striped">
-			<tbody>
-				<tr><th><input v-if="textbox" type="checkbox" id="all" v-model="checked" @click="checkedAll"/></th><th v-for="th in ths">{{th}}</th></tr>
-				<slot></slot>
-			</tbody>
-		</table>
+		<Table border :columns="columns" :data="tableData"></Table>
 		<div class="panel-footer">
 			<Page :total="100" show-elevator show-sizer show-total />
 		</div>
-		<Modal v-model="modal1" :closable="false" @on-ok="ok">
-	       	<div class="add-content">
-				<div class="form-group">
-				    <label for="selectClass" class="control-label" style="margin-right: 10px;">商品类目</label>
-				    <Button id="selectClass" type="info" @click="modal2=true">选择类目</Button>
-				</div>
-	       	</div>
-    	</Modal>
-    	<Modal title="选择类目" v-model="modal2" @on-ok="ok">
-    		<Tree :data="data1" :render="renderContent" @on-select-change="clickLeaf"></Tree>
-    		<div slot="footer"></div>
-    	</Modal>
 	</div>
 </template>
 
@@ -34,39 +17,7 @@
 export default {
 	data(){
 		return{
-			checked: false,
-			checkList: [],
-			modal1: false,
-			modal2: false,
-			data1: [
-                {
-                    title: 'parent 1',
-                    children: [
-                        {
-                            title: 'parent 1-1',
-                            children: [
-                                {
-                                    title: 'leaf 1-1-1'
-                                },
-                                {
-                                    title: 'leaf 1-1-2'
-                                }
-                            ]
-                        },
-                        {
-                            title: 'parent 1-2',
-                            children: [
-                                {
-                                    title: 'leaf 1-2-1'
-                                },
-                                {
-                                    title: 'leaf 1-2-1'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+			
 		}
 	},
 	props:{
@@ -78,60 +29,18 @@ export default {
 			type:Array,
 			default:[]
 		},
-		ths:{
+		columns:{
 			type:Array,
 			default:[]
 		},
-		textbox:{
-			type:Boolean,
-			default:true
+		tableData:{
+			type:Array,
+			default:[]
 		}
 	},
 	methods:{
-		renderContent (h, { root, node, data }) {
-            return h('span', {
-                style: {
-                    display: 'inline-block',
-                    width: '100%'
-                }
-            }, [
-                h('span', [
-                    h('Icon', {
-                        props: {
-                            type: data.children!=null?'ios-folder-outline':'ios-paper-outline'
-                        },
-                        style: {
-                            marginRight: '8px'
-                        }
-                    }),
-                    h('span', data.title)
-                ])
-                
-            ]);
-        },
-		checkedAll(){
-			let that=this;
-			//console.log($("input[type='checkbox']"));
-			if(that.checked){//点击复选框此时that.checked还未改变
-				$("input[type='checkbox']").each(function(){
-					//console.log(this);
-					this.checked=false;
-				});
-			}else{
-				$("input[type='checkbox']").each(function(){
-					this.checked=true;
-				});
-			}
-		},
-		ok () {
-            this.$Message.info('Clicked ok');
-       	},
-        changeModal(){
-        	this.modal1=true;
-        },
-        clickLeaf(){
-        	//let el=$(event.currentTarget);
-        	console.log("el");
+        childMethod(method){
+        	this.$emit(method);
         }
 	},
 	mounted(){
@@ -143,14 +52,26 @@ export default {
 </script>
 
 <style scoped lang="css">
+.panel{
+	border-left: none;
+	border-right: none;
+}.panel-heading{
+	border-left: 1px solid #dcdee2;
+	border-right: 1px solid #dcdee2;
+}
 .btn-info{
 	margin: 0px 1px;
 }
 .panel-body{
 	padding: 5px 15px;
+	border-left: 1px solid #dcdee2;
+	border-right: 1px solid #dcdee2;
 }
 .panel-footer{
 	padding: 3px 15px;
+	border-top: none;
+	border-left: 1px solid #dcdee2;
+	border-right: 1px solid #dcdee2;
 }
 .ivu-page{
 	position: relative;

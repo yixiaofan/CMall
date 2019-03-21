@@ -1,22 +1,34 @@
 <template lang="html">
 	<div class="addGoods">
-		<AdminAdd :items="items" />
+		<AdminAdd @openModal1="openModal1" @openModal2="openModal2" :items="items" />
+		<Modal title="选择类目" v-model="modal1" @on-ok="ok">
+	       	<Tree :data="data5" :load-data="loadData" :render="renderContent"></Tree>
+	       	<div slot="footer"></div>
+    	</Modal>
+		<Modal title="批量图片上传" v-model="modal2" @on-ok="ok">
+	       	<GoodsPic/>
+	       	<div slot="footer"></div>
+    	</Modal>
 	</div>
 </template>
 
 <script>
 import AdminAdd from "../../components/Admin_add"
+import GoodsPic from "../../components/Goods_pic"
 
 export default {
 	data(){
 		return{
+			modal1: false,
+			modal2: false,
             items:[
 	            {
 	            	type:"button",
 	            	id:"selectClass",
 	            	label:"商品类目",
 	            	text:"选择类目",
-	            	targetId:""
+	            	method:"openModal1",
+					select:true
 	            },
 	            {
 	            	type:"input",
@@ -48,19 +60,110 @@ export default {
 	            	id:"goodsPic",
 	            	label:"商品图片",
 	            	text:"上传图片",
-	            	targetId:"#goodsPicPage"
+	            	method:"openModal2",
+	            	select:false
 	            },
 	            {
 	            	type:"quillEditor",
 	            	id:"goodsDescribe",
 	            	label:"商品描述"
 	            }
+            ],
+            data5: [
+                {
+                    title: 'parent 1',
+                    expand: false,
+                    loading: false,
+                    children: [
+                        {
+                            title: 'child 1-1',
+                            expand: false,
+                            loading: false,
+                            children: [
+                                {
+                                    title: 'leaf 1-1-1',
+                                    loading: false,
+                                    children: [],
+                                    expand: false
+                                },
+                                {
+                                    title: 'leaf 1-1-2',
+                                    expand: false
+                                }
+                            ]
+                        },
+                        {
+                            title: 'child 1-2',
+                            loading: false,
+                            expand: false,
+                            children: [
+                                {
+                                    title: 'leaf 1-2-1',
+                                    expand: false
+                                },
+                                {
+                                    title: 'leaf 1-2-1',
+                                    loading: false,
+                                    children: [],
+                                    expand: false
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
 		}
 	},
 	components:{
-		AdminAdd
+		AdminAdd,
+		GoodsPic
 	},
+	methods:{
+        openModal1(){
+        	this.modal1=!this.modal1;
+        },
+        openModal2(){
+        	this.modal2=true;
+        },
+        ok () {
+            this.$Message.info('Clicked ok');
+       	},
+       	renderContent (h, { root, node, data }) {
+            return h('span', {
+                style: {
+                    display: 'inline-block',
+                    width: '100%'
+                }
+            }, [
+                h('MySpan', {
+                	props: {
+                        myroot: root,
+                		mynode: node,
+                        mydata: data,
+                        rightMenu:false
+                    }
+                })
+            ]);
+        },
+        loadData (item, callback) {
+        	//console.log(item);
+            setTimeout(() => {
+                const data = [
+                    {
+                        title: '11111',
+                        loading: false,
+                        expand: false,
+                        children: []
+                    },
+                    {
+                        title: '22222',
+                        expand: false,
+                    }
+                ];
+                callback(data);
+            }, 1000);
+        }
+  	},
 	mounted(){
 
 	}
