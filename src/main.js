@@ -34,7 +34,8 @@ let store =new Vuex.Store({
 		img_upload_cache: [],
 		img_paths: [],
 		img_status: 'ready',
-		select_class:''
+		select_class:'',
+		select_class_data:[{group:'主体',params:['CPU','显卡']},{group:'格式',params:['支持语言']}]
 	},
 	mutations:{
 		s_flagChange(state) {
@@ -57,6 +58,9 @@ let store =new Vuex.Store({
 		},
 		set_select_class(state, arg){
 			state.select_class=arg;
+		},
+		set_select_class_data(state, arg){
+			state.select_class_data=arg;
 		}
 	}
 })

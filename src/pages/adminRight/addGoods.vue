@@ -6,7 +6,7 @@
 	       	<div slot="footer"></div>
     	</Modal>
 		<Modal title="批量图片上传" v-model="modal2" @on-ok="ok">
-	       	<GoodsPic/>
+	       	<GoodsPic :fatherMethod="openModal2"/>
 	       	<div slot="footer"></div>
     	</Modal>
 	</div>
@@ -28,7 +28,8 @@ export default {
 	            	label:"商品类目",
 	            	text:"选择类目",
 	            	method:"openModal1",
-					select:true
+					select:true,
+					img:false
 	            },
 	            {
 	            	type:"input",
@@ -61,12 +62,21 @@ export default {
 	            	label:"商品图片",
 	            	text:"上传图片",
 	            	method:"openModal2",
-	            	select:false
+	            	select:false,
+	            	img:true
 	            },
 	            {
 	            	type:"quillEditor",
 	            	id:"goodsDescribe",
 	            	label:"商品描述"
+	            },
+	            {
+	            	type:"jsonData",
+	            	id:"goodsParam",
+	            	label:"商品规格"
+	            },
+	            {
+	            	type:"submit"
 	            }
             ],
             data5: [
@@ -123,12 +133,13 @@ export default {
         	this.modal1=!this.modal1;
         },
         openModal2(){
-        	this.modal2=true;
+        	this.modal2=!this.modal2;
         },
         ok () {
             this.$Message.info('Clicked ok');
        	},
        	renderContent (h, { root, node, data }) {
+       		let myfunc=this.openModal1;
             return h('span', {
                 style: {
                     display: 'inline-block',
@@ -140,6 +151,7 @@ export default {
                         myroot: root,
                 		mynode: node,
                         mydata: data,
+                        fatherMethod:myfunc,
                         rightMenu:false
                     }
                 })

@@ -14,10 +14,17 @@ export default {
 			imgs: []
 		}
 	},
+	props:{
+		fatherMethod:{
+	        type: Function,
+	        default: null
+	    }
+	},
 	computed: {
 	    ...mapState({
 	      imgStatus: state => state.imgstore.img_status,
-	      imgPaths: state => state.imgstore.img_paths
+	      imgPaths: state => state.imgstore.img_paths,
+	      imgStore: state => state.imgstore.img_upload_cache
 	    })
 	},
 	methods:{
@@ -29,8 +36,11 @@ export default {
 	      	for (let key of this.imgPaths) {
 	        	values.push(key)
 	      	}
-	      	this.imgs = values
-	      	console.log(this.imgs)
+	      	this.imgs = values;
+	      	console.log(this.imgs);
+	      	if (this.fatherMethod) {
+	          this.fatherMethod();
+	        }
 	    }
 	},
 	watch: {

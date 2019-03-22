@@ -1,23 +1,19 @@
 <template lang="html">
 	<div class="paramList">
 		<AdminTable @openModal1="openModal1" title="规格参数" :body="pBody" :columns="pColumns" :tableData="pTableData"></AdminTable>
-		<Modal v-model="modal1" :closable="false" @on-ok="ok">
-	       	<div class="add-content">
-				<div class="form-group">
-				    <label for="selectClass" class="control-label" style="margin-right: 10px;">商品类目</label>
-				    <Button id="selectClass" type="info" @click="modal2=true">选择类目</Button>
-				</div>
-	       	</div>
+		<Modal v-model="modal1" :closable="false" width="700" @on-ok="ok">
+	       	<AdminAdd @openModal2="openModal2" :items="items" />
     	</Modal>
     	<Modal title="选择类目" v-model="modal2" @on-ok="ok">
-    		<Tree :data="data1" :render="renderContent"></Tree>
-    		<div slot="footer"></div>
+    		<Tree :data="data5" :load-data="loadData" :render="renderContent"></Tree>
+	       	<div slot="footer"></div>
     	</Modal>
 	</div>
 </template>
 
 <script>
 import AdminTable from "../../components/admin_table"
+import AdminAdd from "../../components/Admin_add"
 
 export default {
 	data(){
@@ -75,68 +71,118 @@ export default {
                     date: '2016-10-04'
                 }
             ],
-            data1: [
+            data5: [
                 {
                     title: 'parent 1',
+                    expand: false,
+                    loading: false,
                     children: [
                         {
-                            title: 'parent 1-1',
+                            title: 'child 1-1',
+                            expand: false,
+                            loading: false,
                             children: [
                                 {
-                                    title: 'leaf 1-1-1'
+                                    title: 'leaf 1-1-1',
+                                    loading: false,
+                                    children: [],
+                                    expand: false
                                 },
                                 {
-                                    title: 'leaf 1-1-2'
+                                    title: 'leaf 1-1-2',
+                                    expand: false
                                 }
                             ]
                         },
                         {
-                            title: 'parent 1-2',
+                            title: 'child 1-2',
+                            loading: false,
+                            expand: false,
                             children: [
                                 {
-                                    title: 'leaf 1-2-1'
+                                    title: 'leaf 1-2-1',
+                                    expand: false
                                 },
                                 {
-                                    title: 'leaf 1-2-1'
+                                    title: 'leaf 1-2-1',
+                                    loading: false,
+                                    children: [],
+                                    expand: false
                                 }
                             ]
                         }
                     ]
                 }
+            ],
+            items:[
+	            {
+	            	type:"button",
+	            	id:"selectClass",
+	            	label:"商品类目",
+	            	text:"选择类目",
+	            	method:"openModal2",
+					select:true,
+					img:false
+	            },
+	            {
+	            	type:"param",
+	            	id:"paramList",
+	            	label:"规格参数"
+	            }
             ]
 		}
 	},
 	components:{
-		AdminTable
+		AdminTable,
+		AdminAdd
 	},
 	methods:{
 		renderContent (h, { root, node, data }) {
+       		let myfunc=this.openModal2;
             return h('span', {
                 style: {
                     display: 'inline-block',
                     width: '100%'
                 }
             }, [
-                h('span', [
-                    h('Icon', {
-                        props: {
-                            type: data.children!=null?'ios-folder-outline':'ios-paper-outline'
-                        },
-                        style: {
-                            marginRight: '8px'
-                        }
-                    }),
-                    h('span', data.title)
-                ])
-                
+                h('MySpan', {
+                	props: {
+                        myroot: root,
+                		mynode: node,
+                        mydata: data,
+                        fatherMethod:myfunc,
+                        rightMenu:false
+                    }
+                })
             ]);
+        },
+        loadData (item, callback) {
+        	//console.log(item);
+            setTimeout(() => {
+                const data = [
+                    {
+                        title: '11111',
+                        loading: false,
+                        expand: false,
+                        children: []
+                    },
+                    {
+                        title: '22222',
+                        expand: false,
+                    }
+                ];
+                callback(data);
+            }, 1000);
         },
 		ok () {
             this.$Message.info('Clicked ok');
        	},
        	openModal1(){
-       		this.modal1=true;
-       	}
+        	this.modal1=!this.modal1;
+        },
+        openModal2(){
+        	this.modal2=!this.modal2;
+        },
 	},
 	mounted(){
 //		const postUrl = "/cmall_item_api/item?id="+itemId;

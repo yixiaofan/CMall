@@ -53,7 +53,11 @@ export default {
 		rightMenu:{
 			type:Boolean,
 			default:true
-		}
+		},
+		fatherMethod:{
+	        type: Function,
+	        default: null
+	    }
 	},
 	methods: {
         append (data) {
@@ -101,9 +105,11 @@ export default {
         clickme (data){
         	if(data.children&&data.children.length!=0){
         		data.expand=!data.expand;
-        	}else{
+        	}else if(this.rightMenu==false){
         		this.$store.commit('set_select_class',data.title);
-        		this.$parent.$parent.$parent.$parent.$parent.$parent.openModal1();
+        		if (this.fatherMethod) {
+		          this.fatherMethod();
+		        }
         	}
         },
         myrename(el,data){
