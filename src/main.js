@@ -12,8 +12,10 @@ import uploader from 'vue-easy-uploader'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import MySpan from './components/myspan'
+import rightMenu from 'vue-right-menu'
+import 'vue-right-menu/src/index.css'
 
-
+Vue.use(rightMenu)
 Vue.use(MySpan)
 Vue.use(iView)
 Vue.use(VueCookie)
@@ -29,8 +31,6 @@ let store =new Vuex.Store({
 	state:{
 		s_flag:false,
 		userInfo:'',
-		page_current:'',
-		page_totalpage:'',
 		img_upload_cache: [],
 		img_paths: [],
 		img_status: 'ready',
@@ -40,13 +40,7 @@ let store =new Vuex.Store({
 	mutations:{
 		s_flagChange(state) {
 	      	state.s_flag=true;
-	    },
-	    setPage_current(page){
-	   		state.page_current=page;
-	    },
-	   	setPage_totalpage(page){
-	   		state.page_totalpage=page;
-	   	},
+	   },
 	   	set_img_upload_cache (state, arg) {
 		    state.img_upload_cache = arg
 		},

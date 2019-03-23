@@ -129,6 +129,11 @@ export default {
 		GoodsPic
 	},
 	methods:{
+		myfunc(data){
+			//console.log(data);
+			this.$store.commit('set_select_class',data.title);
+			this.openModal1();
+		},
         openModal1(){
         	this.modal1=!this.modal1;
         },
@@ -139,7 +144,7 @@ export default {
             this.$Message.info('Clicked ok');
        	},
        	renderContent (h, { root, node, data }) {
-       		let myfunc=this.openModal1;
+       		let myfunc=this.myfunc;
             return h('span', {
                 style: {
                     display: 'inline-block',
@@ -183,20 +188,5 @@ export default {
 </script>
 
 <style scoped lang="css">
-.form-group{
-	overflow: hidden;
-}
-.form-horizontal .form-group {
-     margin-right: 0px; 
-     margin-left: 0px; 
-}
-.form-horizontal .control-label{
-	text-align: left;
-}
-.sellpoint{
-	padding-top: 27px;
-}
-.goodsDes{
-	padding-top: 98px;
-}
+
 </style>

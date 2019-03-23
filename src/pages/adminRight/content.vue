@@ -2,7 +2,7 @@
 	<div class="content">
 		<Split v-model="split1">
             <div slot="left" class="demo-split-pane">
-                Left Pane
+                <Tree :data="data5" :load-data="loadData" :render="renderContent"></Tree>
             </div>
             <div slot="right" class="demo-split-pane">
                 <AdminTable ref="table" title="" :body="pBody" :columns="pColumns" :tableData="pTableData"></AdminTable>
@@ -63,12 +63,97 @@ export default {
                     address: 'Ottawa No. 2 Lake Park',
                     date: '2016-10-04'
                 }
+            ],
+            data5: [
+                {
+                    title: 'parent 1',
+                    expand: false,
+                    loading: false,
+                    children: [
+                        {
+                            title: 'child 1-1',
+                            expand: false,
+                            loading: false,
+                            children: [
+                                {
+                                    title: 'leaf 1-1-1',
+                                    loading: false,
+                                    children: [],
+                                    expand: false
+                                },
+                                {
+                                    title: 'leaf 1-1-2',
+                                    expand: false
+                                }
+                            ]
+                        },
+                        {
+                            title: 'child 1-2',
+                            loading: false,
+                            expand: false,
+                            children: [
+                                {
+                                    title: 'leaf 1-2-1',
+                                    expand: false
+                                },
+                                {
+                                    title: 'leaf 1-2-1',
+                                    loading: false,
+                                    children: [],
+                                    expand: false
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
         }
    	},
    	components:{
 		AdminTable
-	}
+	},
+	methods:{
+		myfunc(){
+			alert("我的方法");
+		},
+       	renderContent (h, { root, node, data }) {
+       		let myfunc=this.myfunc;
+            return h('span', {
+                style: {
+                    display: 'inline-block',
+                    width: '100%'
+                }
+            }, [
+                h('MySpan', {
+                	props: {
+                        myroot: root,
+                		mynode: node,
+                        mydata: data,
+                        fatherMethod:myfunc,
+                        rightMenu:false
+                    }
+                })
+            ]);
+        },
+        loadData (item, callback) {
+        	//console.log(item);
+            setTimeout(() => {
+                const data = [
+                    {
+                        title: '11111',
+                        loading: false,
+                        expand: false,
+                        children: []
+                    },
+                    {
+                        title: '22222',
+                        expand: false,
+                    }
+                ];
+                callback(data);
+            }, 1000);
+        }
+  	}
 }
 </script>
 
