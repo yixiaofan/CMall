@@ -11,6 +11,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+    	"/cmall_manage_api":{
+    		target:"http://127.0.0.1:80",
+    		changeOrigin:true,
+    		pathRewrite:{
+    			'^/cmall_manage_api':''
+    		}
+    	},
     	"/cmall_item_api":{
     		target:"http://127.0.0.1:8081",
     		changeOrigin:true,

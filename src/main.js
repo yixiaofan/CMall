@@ -35,7 +35,12 @@ let store =new Vuex.Store({
 		img_paths: [],
 		img_status: 'ready',
 		select_class:'',
-		select_class_data:[{group:'主体',params:['CPU','显卡']},{group:'格式',params:['支持语言']}]
+		select_id:-1,
+		select_class_data:[],
+		params_id:-1,
+		params_class:'',
+		goods_id:-1,
+		goods_class:''
 	},
 	mutations:{
 		s_flagChange(state) {
@@ -53,9 +58,24 @@ let store =new Vuex.Store({
 		set_select_class(state, arg){
 			state.select_class=arg;
 		},
+		set_select_id(state, arg){
+			state.select_id=arg;
+		},
 		set_select_class_data(state, arg){
 			state.select_class_data=arg;
-		}
+		},
+		set_params_class(state, arg){
+			state.params_class=arg;
+		},
+		set_params_id(state, arg){
+			state.params_id=arg;
+		},
+		set_goods_class(state, arg){
+			state.goods_class=arg;
+		},
+		set_goods_id(state, arg){
+			state.goods_id=arg;
+		},
 	}
 })
 Vue.use(uploader, store);

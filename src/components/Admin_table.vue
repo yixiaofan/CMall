@@ -4,11 +4,11 @@
 			<h3 class="panel-title">{{title}}</h3>
 		</div>
 		<div class="panel-body">
-			<button class="btn btn-sm btn-info" v-for="(b,index) in body" @click="childMethod(b.method)"><i :class="b.css"></i> {{b.text}}</button>
+			<button class="btn btn-sm btn-info" v-for="(b,index) in body" @click="childMethod(b.method,b.param)"><i :class="b.css"></i> {{b.text}}</button>
 		</div>
-		<Table border :columns="columns" :data="tableData"></Table>
+		<Table @on-selection-change="handleSelectRow" border :columns="columns" :loading="loading" :data="tableData"></Table>
 		<div class="panel-footer">
-			<Page :total="100" show-elevator show-sizer show-total />
+			<Page :total="total" @on-change="changePage" @on-page-size-change="changePageSize" show-elevator show-sizer show-total />
 		</div>
 	</div>
 </template>
@@ -17,7 +17,11 @@
 export default {
 	data(){
 		return{
-			
+			params:{
+            	page: 1,
+            	rows: 10
+			},
+			ids:[]
 		}
 	},
 	props:{
@@ -36,11 +40,44 @@ export default {
 		tableData:{
 			type:Array,
 			default:[]
-		}
+		},
+		loading:{
+			type:Boolean,
+			default:true
+		},
+		method:{
+			type:String,
+			default:""
+		},
+		total:{
+			type:Number,
+			default: 0
+		},
 	},
 	methods:{
-        childMethod(method){
-        	this.$emit(method);
+        childMethod(method,param){
+        	if(typeof(param)==='undefined'){
+        		this.$emit(method);
+        	}else{
+        		this.$emit(method,param,this.ids);
+        	}
+        },
+        changePage(page){
+        	//console.log(page);
+        	this.params.page=page;
+        	this.$emit(this.method,this.params);
+        },
+        changePageSize(pageSize){
+        	//console.log(pageSize);
+        	this.params.rows=pageSize;
+        	this.$emit(this.method,this.params);
+        },
+        handleSelectRow(selection){
+        	//console.log(selection);
+        	this.ids=[];
+        	for(let i in selection){
+        		this.ids.push(selection[i]["id"]);
+        	}
         }
 	},
 	mounted(){

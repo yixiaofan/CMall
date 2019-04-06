@@ -6,26 +6,26 @@
 					<li class="panel panel-default">
 						<div class="panel-heading" role="tab" id="heading1">
 							<div class="panel-title first" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
-						        <div id="index" class="panel-text" @click="changeColor($event);changePage('Index')">首页</div>
+						        <div id="index" :style="component=='Index'?{color: 'white'}:{color: '#b6b6b6'}" class="panel-text" @click="changeColor('Index');changePage('Index')">首页</div>
 						    </div>
 						</div>
 					</li>
 					<li class="panel panel-default">
 						<div class="panel-heading" role="tab" id="heading2">
 							<div class="panel-title collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
-						        <div class="panel-text" @click="changeColor($event)">商品管理</div>
+						        <div class="panel-text" :style="(component=='AddGoods'||component=='SearchGoods'||component=='ParamList')?{color: 'white'}:{color: '#b6b6b6'}">商品管理</div>
 						    </div>
 						</div>
 						<div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
 							<ul class="admin-sidebar-sub">
 								<li>
-									<div class="panel-text" @click="changeColor($event);changePage('AddGoods')">新增商品</div>
+									<div class="panel-text" :style="component=='AddGoods'?{color: 'white'}:{color: '#b6b6b6'}" @click="changePage('AddGoods')">新增商品</div>
 								</li>
 								<li>
-									<div class="panel-text" @click="changeColor($event);changePage('SearchGoods')">查询商品</div>
+									<div class="panel-text" :style="component=='SearchGoods'?{color: 'white'}:{color: '#b6b6b6'}" @click="changePage('SearchGoods')">查询商品</div>
 								</li>
 								<li>
-									<div class="panel-text" @click="changeColor($event);changePage('ParamList')">规格参数</div>
+									<div class="panel-text" :style="component=='ParamList'?{color: 'white'}:{color: '#b6b6b6'}" @click="changePage('ParamList')">规格参数</div>
 								</li>
 							</ul>
 						</div>
@@ -33,16 +33,16 @@
 					<li class="panel panel-default">
 						<div class="panel-heading" role="tab" id="heading3">
 							<div class="panel-title collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
-						        <div class="panel-text" @click="changeColor($event)">网页内容管理</div>
+						        <div class="panel-text" :style="(component=='ContentCategory'||component=='Content')?{color: 'white'}:{color: '#b6b6b6'}">网页内容管理</div>
 						    </div>
 						</div>
 						<div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
 							<ul class="admin-sidebar-sub">
 								<li>
-									<div class="panel-text" @click="changeColor($event);changePage('ContentCategory')">内容分类管理</div>
+									<div class="panel-text" :style="component=='ContentCategory'?{color: 'white'}:{color: '#b6b6b6'}" @click="changePage('ContentCategory')">内容分类管理</div>
 								</li>
 								<li>
-									<div class="panel-text" @click="changeColor($event);changePage('Content')">内容管理</div>
+									<div class="panel-text" :style="component=='Content'?{color: 'white'}:{color: '#b6b6b6'}" @click="changePage('Content')">内容管理</div>
 								</li>
 							</ul>
 						</div>
@@ -69,7 +69,6 @@ import Content from "./adminRight/content"
 export default {
 	data(){
 		return{
-			pre:'',
 			component:'Index'
 		}
 	},
@@ -82,19 +81,27 @@ export default {
 		Content
 	},
 	methods:{
-		changeColor(event){
-			this.pre.css("color","#b6b6b6");
-			let el=$(event.currentTarget);
-			this.pre=el;
-			el.css("color","white");
-		},
 		changePage(str){
+			if(str=="AddGoods"){
+				this.$store.commit('set_img_upload_cache',[]);
+				this.$store.commit('set_img_paths',[]);
+				this.$store.commit('set_img_status',"ready");
+				this.$store.commit('set_select_id',this.$store.state.goods_id);
+				this.$store.commit('set_select_class',this.$store.state.goods_class);
+			}else if(str=="ParamList"){
+				this.$store.commit('set_select_id',this.$store.state.params_id);
+				this.$store.commit('set_select_class',this.$store.state.params_class);
+			}else if(str=="Content"){
+				this.$store.commit('set_img_upload_cache',[]);
+				this.$store.commit('set_img_paths',[]);
+				this.$store.commit('set_img_status',"ready");
+			}
 			this.component=str;
 		}
 	},
 	mounted(){
-		this.pre=$("#index");
-		this.pre.css("color","white");
+		//this.pre=$("#index");
+		//this.pre.css("color","white");
 	}
 }
 </script>

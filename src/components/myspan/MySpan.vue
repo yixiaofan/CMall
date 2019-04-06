@@ -62,6 +62,9 @@ export default {
 	methods: {
         append (data) {
         	let that=this;
+        	if(typeof(data.children)!="undefined"&&!data.expand){
+        		return;
+        	}
         	data.expand=true;
             const children = data.children || [];
             children.push({
@@ -72,10 +75,30 @@ export default {
             $(that.$refs.myspan).prev().attr("class","ivu-icon ivu-icon-ios-folder-outline");
             setTimeout(function(){
             	let span=$(that.$refs.myspan).closest("li").find("span").last();
-            	that.myrename(span,data.children[data.children.length-1],true);
+            	that.myrename(span,data,true);
             }, 200);
         },
         remove (root, node, data, flag) {
+        	this.$axios({
+			    method: 'get',
+			    url:"/cmall_manage_api/content/category/delete",
+			    params: {
+			        "id":data.id
+			    }
+			}).then((res)=>{
+				//console.log(res);
+				if(res.data.status==200){
+					this.$Modal.success({title: "成功",content: "已删除该分类"});
+					this.myremove(root, node, data, flag);
+				}else{
+					this.$Modal.error({title: "错误",content: "删除失败"});
+				}
+			})
+			.catch(error => {
+		        console.log(error);
+		    })
+        },
+        myremove (root, node, data, flag) {
         	let that=this;
             const parentKey = root.find(el => el === node).parent;
             const parent = root.find(el => el.nodeKey === parentKey).node;
@@ -117,6 +140,12 @@ export default {
         	}
         },
         myrename(el,data,parent){
+        	let oldTitle=data.title;
+        	let childData=data;
+        	if(parent){
+        		childData=data.children[data.children.length-1];
+        		oldTitle=childData.title;
+        	}
         	el.attr("contenteditable", "true").focus();
         	let range = window.getSelection();//创建range
    			range.selectAllChildren(el[0]);//range 选择obj下所有子内容
@@ -129,19 +158,68 @@ export default {
 			});
         	el.one("blur",() =>{
         		el.unbind("keypress");
-        		data.title=el.text().trim();
+        		childData.title=el.text().trim();
 				el.attr("contenteditable", "false");
-				if(data.title==""){
+				if(childData.title!=""){
+					if(parent){
+						this.$axios({
+						    method: 'get',
+						    url:"/cmall_manage_api/content/category/create",
+						    params: {
+						        "parentId":data.id,
+						        "name":childData.title
+						    }
+						}).then((res)=>{
+							//console.log(res);
+							if(res.data.status!=200){
+								this.$Modal.error({title: "提示",content: "该分类名已存在"});
+			                   	let pnode=this.mynode;
+			                   	let nodeKey=pnode.node.children[pnode.node.children.length-1].nodeKey;
+			                   	pnode = this.myroot.find(el => el.nodeKey === nodeKey);
+			                   	this.myremove(this.myroot,pnode,childData,parent);
+							}else{
+								//console.log(res);
+								childData.id=res.data.data.id;
+							}
+						})
+						.catch(error => {
+					        console.log(error);
+					    })
+					}else{
+						this.$axios({
+						    method: 'get',
+						    url:"/cmall_manage_api/content/category/update",
+						    params: {
+						        "id":data.id,
+						        "name":childData.title
+						    }
+						}).then((res)=>{
+							console.log(res);
+							if(res.data.status!=200){
+								this.$Modal.error({title: "提示",content: "该分类名已存在"});
+			                   	childData.title=oldTitle;
+			                   	el.text(oldTitle);
+							}
+						})
+						.catch(error => {
+					        console.log(error);
+					    })
+					}
+					
+				}else{
 					this.$Modal.error({
                         title: "提示",
-                        content: "内容不能为空"
+                        content: "分类名不能为空"
                    	});
                    	let pnode=this.mynode;
                    	if(parent){
                    		let nodeKey=pnode.node.children[pnode.node.children.length-1].nodeKey;
                    		pnode = this.myroot.find(el => el.nodeKey === nodeKey);
-                   	}//console.log(pnode);
-		            this.remove(this.myroot,pnode,data,parent);
+                   		this.myremove(this.myroot,pnode,childData,parent);
+                   	}else{
+                   		childData.title=oldTitle;
+                   		el.text(oldTitle);
+                   	}
 				}
 			});
         }

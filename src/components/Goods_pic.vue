@@ -1,12 +1,13 @@
 <template lang="html">
 	<div>
-	    <uploader url="http://cn.ynhdkc.com/admin/uploadapiv2/uploadpics"></uploader>
+	    <uploader ref="uploader" @uploadMethod="uploadMethod" method="uploadMethod" url="http://127.0.0.1:80/pic/upload"></uploader>
 	    <div class="btn-upload" @click="upload">上传</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import qs from 'qs'
 
 export default {
 	data(){
@@ -18,7 +19,11 @@ export default {
 		fatherMethod:{
 	        type: Function,
 	        default: null
-	    }
+	   	},
+	   	mypath:{
+	   		type: String,
+	   		default: ""
+	   	}
 	},
 	computed: {
 	    ...mapState({
@@ -29,18 +34,54 @@ export default {
 	},
 	methods:{
 		upload () {
-	      	this.$store.commit('set_img_status', 'uploading')
+	      	this.$store.commit('set_img_status', 'uploading');
 	    },
 	    submit () {
-	      	let values = []
-	      	for (let key of this.imgPaths) {
-	        	values.push(key)
-	      	}
-	      	this.imgs = values;
-	      	console.log(this.imgs);
 	      	if (this.fatherMethod) {
-	          this.fatherMethod();
+	          	this.fatherMethod();
 	        }
+	    },
+	    uploadMethod(){
+	    	let formData = new FormData();
+	    	//console.log(this.imgStore);
+	    	this.imgStore.forEach((item, index) => {
+	    		if(this.mypath==""||index<2){
+	    			//console.log(index);
+	    			formData.append("uploadFile",item.file,item.name);
+	    		}
+	    		//console.log(formData);
+		    })
+	    	//let mydata=qs.stringify(formData);
+	    	let mydata=formData;
+	    	//console.log(mydata.get("uploadFile"));
+//	    	const instance=this.$axios.create({
+//		      	
+//		    })
+//		    instance.post('/cmall_manage_api/pic/upload', mydata)
+//		    .then((res)=>{
+//		      	console.log(res);
+//		    })
+
+	    	this.$axios({
+			    method: 'post',
+			    url:"/cmall_manage_api/pic/upload",
+			    //headers: {'Content-Type': 'multipart/form-data'},
+//			    params: {
+//			        "uploadFile":mydata
+//			    }
+				data:mydata
+			}).then((res)=>{
+				console.log(res);
+				if(res.data.error==0){
+					this.$store.commit('set_img_paths', res.data.url);
+				}
+				this.$refs.uploader.files=[];
+				this.$refs.uploader.index=0;
+				this.$store.commit('set_img_status', 'finished');
+			})
+			.catch(error => {
+		        console.log(error);
+		    })
 	    }
 	},
 	watch: {

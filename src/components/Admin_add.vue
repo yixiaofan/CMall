@@ -30,10 +30,16 @@
 					</div>
 			    </div>
 			</div>
-			<div class="form-group" v-else-if="item.type=='input'">
+			<div class="form-group" v-else-if="item.type=='text'">
 			    <label :for="item.id" class="control-label col-xs-1">{{item.label}}</label>
 			    <div class="col-xs-7 input-group">
-			    	<input type="text" class="form-control" :id="item.id">
+			    	<input type="text" class="form-control data" :id="item.id">
+			    </div>
+			</div>
+			<div class="form-group" v-else-if="item.type=='number'">
+			    <label :for="item.id" class="control-label col-xs-1">{{item.label}}</label>
+			    <div class="col-xs-7 input-group">
+			    	<input type="number" class="form-control data" :id="item.id">
 			    </div>
 			</div>
 			<div class="form-group" v-else-if="item.type=='textarea'">
@@ -48,26 +54,24 @@
 			        <quill-editor
 			        	ref="myquillEditor"
 			            v-model="content" 
-			            :options="editorOption" 
-			            @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
-			            @change="onEditorChange($event)">
+			            :options="editorOption">
 			        </quill-editor>
 			    </div>
 			</div>
-			<div class="form-group" v-else-if="item.type=='jsonData'&&$store.state.select_class_data!=[]">
+			<div class="form-group" v-else-if="item.type=='jsonData'&& $store.state.select_class_data.length!=0">
 			    <label :for="item.id" class="control-label col-xs-1" style="padding: 0px;">{{item.label}}</label>
-			    <div :id="item.id" class="col-xs-7">
+			    <div :id="item.id" class="col-xs-7 myparams">
 			    	<div v-for="data in $store.state.select_class_data" style="font-weight: bold;">
 			    		<span style="text-align: center;background: #B3D4FC;width: 220px;display: inline-block;">{{data.group}}</span>
 			    		<div v-for="d in data.params">
 			    			<label style="width: 65px;text-align: right;margin-right: 2px;">{{d}}</label>
-			    			<Input  size="small" style="width: 150px;" />
+			    			<Input size="small" style="width: 150px;" />
 			    		</div>
 			    	</div>
 			    </div>
 			</div>
 			<div class="form-group form" v-else-if="item.type=='submit'">
-				<Button type="primary" size="large" @click="submit">提交</Button>
+				<Button type="primary" size="large" @click="childMethod(item.method)">提交</Button>
 				<Button size="large" @click="reset">重置</Button>
 			</div>
 		</div>
@@ -109,12 +113,6 @@ export default {
       }
     },
 	methods:{
-        onEditorBlur(){//失去焦点事件
-        },
-        onEditorFocus(){//获得焦点事件
-        },
-        onEditorChange(){//内容改变事件
-        },
         childMethod(method){
         	//console.log(method);
         	this.$emit(method);
@@ -135,10 +133,18 @@ export default {
 			}
 		},
 		reset(){
-			alert("reset");
-		},
-		submit(){
-			alert("submit");
+			this.$store.commit('set_select_class',"");
+			this.$store.commit('set_img_status','ready');
+			this.$store.commit('set_img_upload_cache',[]);
+    		this.$store.commit('set_img_paths',[]);
+    		$('input.data').each(function () {
+				this.value="";
+			});
+			$("textarea").val("");
+			$(".myparams").find("input[type='text']").each(function () {
+				this.value="";
+			});
+			this.content=null;
 		}
   	},
 	mounted(){
@@ -149,17 +155,6 @@ export default {
       			break;
       		}
       	}
-//		const postUrl = "/cmall_item_api/item?id="+itemId;
-//	    this.$axios.post(postUrl)
-//	      .then(res => {
-//	      	let newData=eval(res.data.substring(4));
-//	      	that.item=newData;
-//	      	that.pic=that.item.images[0];
-//	        console.log(newData);
-//	      })
-//	      .catch(error => {
-//	        console.log(error);
-//	      })
 	}
 }
 </script>
