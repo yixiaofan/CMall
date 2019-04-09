@@ -25,6 +25,13 @@ module.exports = {
     			'^/cmall_item_api':''
     		}
     	},
+    	"/cmall_portal_api":{
+    		target:"http://127.0.0.1:8082",
+    		changeOrigin:true,
+    		pathRewrite:{
+    			'^/cmall_portal_api':''
+    		}
+    	},
     	"/cmall_search_api":{
     		target:"http://127.0.0.1:8083",
     		changeOrigin:true,
@@ -37,6 +44,20 @@ module.exports = {
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_login_api':''
+    		}
+    	},
+    	"/cmall_cart_api":{
+    		target:"http://127.0.0.1:8085",
+    		changeOrigin:true,
+    		pathRewrite:{
+    			'^/cmall_cart_api':''
+    		}
+    	},
+    	"/cmall_order_api":{
+    		target:"http://127.0.0.1:8086",
+    		changeOrigin:true,
+    		pathRewrite:{
+    			'^/cmall_order_api':''
     		}
     	}
     },

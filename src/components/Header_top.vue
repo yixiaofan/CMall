@@ -4,10 +4,14 @@
 		<div class="mycontainer header">
 			<ul class="top-nav-left">
 				<div class="top-nav-items">
-					<div class="menu-hd">
+					<div v-if="$store.state.userInfo==null" class="menu-hd">
 						<span>您好，欢迎来到 CMall</span>
 						[<a href="javascript:void(0);" data-toggle="modal" data-target="#loginPage">登录</a>]
 						[<a href="#">注册</a>]
+					</div>
+					<div v-else class="menu-hd">
+						<span>您好 {{$store.state.userInfo.username}}, 欢迎来到 CMall</span>
+						[<a href="javascript:void(0);" @click="logout">退出</a>]
 					</div>
 				</div>
 			</ul>
@@ -63,7 +67,27 @@
 
 <script>
 export default {
-	
+	methods:{
+		logout(){
+		  	let _ticket=this.$cookie.get("TT_TOKEN");
+		  	if(!_ticket){
+		  		return;
+		  	}
+			const postUrl = "/cmall_login_api/user/logout/"+_ticket;
+		    this.$axios.post(postUrl)
+		      .then(res => {
+		        console.log(res);
+		        if(res.data.status==200){
+		        	this.$store.commit('set_userInfo',null);
+		        }else{
+		        	
+		        }
+		      })
+		      .catch(error => {
+		        console.log(error);
+		      })
+		}
+	}
 }
 </script>
 

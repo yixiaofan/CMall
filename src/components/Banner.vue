@@ -3,25 +3,13 @@
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 	    <!-- 轮播（Carousel）指标 -->
 	    <ol class="carousel-indicators">
-	        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-	        <li data-target="#myCarousel" data-slide-to="1"></li>
-	        <li data-target="#myCarousel" data-slide-to="2"></li>
+	        <li data-target="#myCarousel" v-for="(img,index) in adImgs" :key="index" :data-slide-to="index" :class="index==0?'active':''"></li>
 	    </ol>   
 	    <!-- 轮播（Carousel）项目 -->
 	    <div ref="carousel" class="carousel-inner" role="listbox">
-	        <div class="item active" style="background: rgb(244, 188, 203);">
-	        	<a href="#">
-	        		<img src="../assets/img/20180810101106984022.jpeg" draggable="false" alt="First slide">
-	        	</a>
-	        </div>
-	        <div class="item" style="background: rgb(239, 198, 196);">
-	        	<a href="#">
-	        		<img src="../assets/img/20180810101224227323.jpeg" draggable="false" alt="Second slide">
-	        	</a>
-	        </div>
-	        <div class="item" style="background: rgb(244, 188, 203);">
-	        	<a href="#">
-	        		<img src="../assets/img/20180810101106984022.jpeg" draggable="false" alt="Third slide">
+	        <div class="item" :class="index==0?'active':''" v-for="(img,index) in adImgs" :key="index" style="background: rgb(244, 188, 203);">
+	        	<a :href="img.href">
+	        		<img :src="img.src" @error="img.src=img.srcB" draggable="false">
 	        	</a>
 	        </div>
 	    </div>
@@ -35,6 +23,11 @@ let endX=0;
 let offset = 30;
 export default {
 	name:"home",
+	data(){
+		return{
+			adImgs:[]
+		}
+	},
 	mounted(){
 		this.addEventListeners();
 	},
@@ -68,7 +61,21 @@ export default {
 				}
 				endX=0;
 			}
+		},
+		getAdImg(){
+			let postUrl="/cmall_portal_api/showBigPic"
+			this.$axios.post(postUrl)
+			  .then((res)=>{
+				console.log(res);
+				this.adImgs=res.data;
+			})
+			.catch(error => {
+		        console.log(error);
+		    })
 		}
+	},
+	mounted(){
+		this.getAdImg();
 	}
 }
 </script>

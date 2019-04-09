@@ -30,7 +30,7 @@ Vue.use(Vuex)
 let store =new Vuex.Store({
 	state:{
 		s_flag:false,
-		userInfo:'',
+		userInfo:null,
 		img_upload_cache: [],
 		img_paths: [],
 		img_status: 'ready',
@@ -45,7 +45,10 @@ let store =new Vuex.Store({
 	mutations:{
 		s_flagChange(state) {
 	      	state.s_flag=true;
-	   },
+	    },
+	    set_userInfo (state, arg){
+	    	state.userInfo = arg
+	    },
 	   	set_img_upload_cache (state, arg) {
 		    state.img_upload_cache = arg
 		},

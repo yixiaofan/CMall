@@ -25,15 +25,15 @@ export default {
 //  })
   },
   mounted(){
-  	const that=this;
   	let _ticket=this.$cookie.get("TT_TOKEN");
   	if(!_ticket){
   		return;
   	}
-		const postUrl = "/cmall_login_api/user/token?_ticket"+_ticket;
+		const postUrl = "/cmall_login_api/user/token/"+_ticket;
     this.$axios.post(postUrl)
       .then(res => {
         console.log(res);
+        this.$store.commit('set_userInfo',res.data.data);
       })
       .catch(error => {
         console.log(error);

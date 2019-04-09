@@ -38,15 +38,18 @@ export default {
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		        console.log(res);
-		        if(res.status==200){
-		        	
+		        if(res.data.status==200){
+		        	$("#loginPage").modal('hide');
+		        	this.$store.commit('set_userInfo',res.data.data);
+		        }else{
+		        	$("#inputEmail").val(res.data.msg);
 		        }
 		      })
 		      .catch(error => {
 		        console.log(error);
 		      })
 		}
-	},
+	}
 }
 </script>
 

@@ -50,51 +50,55 @@
 						<table class="table">
 							<thead>
 								<tr>
+									<th><input @click.stop="checkAllItem" type="checkbox" v-model="allState"/></th>
 									<th>商品信息</th>
 									<th class="c-hide-sm-only">单价</th>
 									<th class="c-hide-sm-only">数量</th>
 									<th class="c-hide-sm-only">金额</th>
+									<th class="c-hide-sm-only">操作</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
+								<tr v-for="(cart,index) in cartList" :key="index">
+									<td><input @click.stop="checkItem(cart)" type="checkbox" v-model="cart.state"/></td>
 									<td>
 										<div class="goods-detail">
-											<a href="#">
-												<img src="http://demo.shopxo.net/static/upload/images/goods/2019/01/14/1547452714324599.jpg"/>
+											<a :href="'http://127.0.0.1:8080/#/goods?itemId='+cart.id">
+												<img :src="cart.images[0]"/>
 											</a>
 											<div class="goods-base">
-												<a href="#" class="buy-goods-title">Meizu/魅族 MX4 Pro移动版 八核大屏智能手机 黑色 16G</a>
+												<a :href="'http://127.0.0.1:8080/#/goods?itemId='+cart.id" class="buy-goods-title">{{cart.title}}</a>
 											</div>
 										</div>
 										<div class="wap-base c-show-sm-only">
-											<span class="original-price">￥3200.00</span>
-											<strong class="total-price-content">￥2499.00</strong>
+											<span class="original-price">￥{{(cart.price/100+50).toFixed(2)}}</span>
+											<strong class="total-price-content">￥{{(cart.price/100*cart.num).toFixed(2)}}</strong>
 											<span class="wap-number">x1</span>
 										</div>
 									</td>
 									<td class="price c-hide-sm-only">
-										<p class="original-price">￥3200.00</p>
-										<p class="line-price">￥2499.00</p>
+										<p class="original-price">￥{{(cart.price/100+50).toFixed(2)}}</p>
+										<p class="line-price">￥{{(cart.price/100).toFixed(2)}}</p>
 									</td>
 									<td class="number c-hide-sm-only">
 										<div class="input-group input-group-sm">
 											<div class="input-group-prepend">
-												<button @click="des" class="btn-label" type="button">
+												<button :disabled="cart.num<2" @click="updateNum(cart,'desc')" class="btn-label" type="button">
 													<strong>-</strong>
 												</button>
 											</div>
-											<input type="text" class="text-box" :value="number" />
+											<input type="text" @blur="updateGoods(cart,$event)" class="text-box" :value="cart.num" />
 											<div class="input-group-append">
-												<button @click="number++" class="btn-label" type="button">
+												<button @click="updateNum(cart,'asc')" class="btn-label" type="button">
 													<strong>+</strong>
 												</button>
 											</div>
 										</div>
 									</td>
 									<td class="total-price c-hide-sm-only">
-										<strong class="total-price-content">￥2499</strong>
+										<strong class="total-price-content">￥{{(cart.price/100*cart.num).toFixed(2)}}</strong>
 									</td>
+									<td><a href="javascript:;" @click.stop="deleteItem(cart)">删除</a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -109,7 +113,7 @@
 							</div>
 						</div>
 						<div class="buy-point-discharge">
-							<p>合计（含运费）<span>¥</span><em class="pay-sum">2499</em></p>
+							<p>合计（含运费）<span>¥</span><em class="pay-sum">{{total}}</em></p>
 						</div>
 						<div class="order-nav">
 							<div class="pay-confirm">
@@ -118,7 +122,7 @@
 										<em>实付款：</em>
 										<span class="price">
 											<span>¥</span>
-											<em class="nav-total-price">2499</em>
+											<em class="nav-total-price">{{total}}</em>
 										</span>
 									</div>
 									<div class="pay-address">
@@ -160,7 +164,10 @@ export default {
 	data(){
 		return{
 			s_flag:false,
-			number:1
+			number:1,
+			cartList:[],
+			total:0,
+			allState:true
 		}
 	},
 	components:{
@@ -172,11 +179,103 @@ export default {
 		IndexFooter
 	},
 	methods:{
-		des:function(){
-			if(this.number>1){
-				this.number--;
+		updateNum(cart,flag){
+			if(flag=="desc"){
+				cart.num--;
+			}else if(flag=="asc"){
+				cart.num++;
 			}
+			const postUrl = "/cmall_cart_api/cart/update/num/"+cart.id+"/"+cart.num;
+		    this.$axios.post(postUrl)
+		      .then(res => {
+		        console.log(res);
+		        this.computeTotal(this.cartList);
+		      })
+		      .catch(error => {
+		        console.log(error);
+		      });
+		},
+		updateGoods(cart,event){
+			let el=$(event.currentTarget);
+			let num=Number(el.val().trim());
+			let reg=/^[1-9]\d*$/;
+			console.log(num);
+			if(!reg.test(num)){
+				el.val(cart.num);
+				this.$Modal.warning({title: "提示",content: "修改商品数量失败"});
+				return false;
+			}
+			cart.num=num;
+			const postUrl = "/cmall_cart_api/cart/update/num/"+cart.id+"/"+cart.num;
+		    this.$axios.post(postUrl)
+		      .then(res => {
+		        console.log(res);
+		        this.computeTotal(this.cartList);
+		      })
+		      .catch(error => {
+		        console.log(error);
+		      });
+		},
+		computeTotal(data){
+			let sum=0;
+	        for(let i in data){
+	        	if(data[i].state){
+	        		sum+=data[i].price/100*data[i].num;
+	        	}
+	        }
+	        this.total=sum.toFixed(2);
+		},
+		checkItem(cart){
+			cart.state=!cart.state;
+			let temp=true;
+			for(let i in this.cartList){
+				if(!this.cartList[i].state){
+					temp=false;
+					break;
+				}
+			}
+			this.allState=temp;
+			this.computeTotal(this.cartList);
+		},
+		checkAllItem(){
+			this.allState=!this.allState;
+			for(let i in this.cartList){
+				this.cartList[i].state=this.allState;
+			}
+			this.computeTotal(this.cartList);
+		},
+		deleteItem(cart){
+			const postUrl = "/cmall_cart_api/cart/delete/"+cart.id;
+		    this.$axios.post(postUrl)
+		      .then(res => {
+		        console.log(res);
+		        for(let i in this.cartList){
+					if(this.cartList[i].id==cart.id){
+						this.cartList.splice(i,1);
+						break;
+					}
+				}
+		        this.computeTotal(this.cartList);
+		      })
+		      .catch(error => {
+		        console.log(error);
+		      });
 		}
+	},
+	mounted(){
+		const postUrl = "/cmall_cart_api/cart/cart";
+	    this.$axios.post(postUrl)
+	      .then(res => {
+	        console.log(res);
+	        for(let i in res.data){
+	        	res.data[i].state=true;
+	        }
+	        this.cartList=res.data;
+	        this.computeTotal(this.cartList);
+	      })
+	      .catch(error => {
+	        console.log(error);
+	      });
 	}
 }
 </script>

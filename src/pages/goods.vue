@@ -121,7 +121,7 @@
 						</div>
 						<div class="submit">
 							<div class="clearfix tb-btn tb-btn-buy buy-event login-event buy-submit">
-								<button @click="buyNow()" type="button">立即购买</button>
+								<button @click="buyNow" type="button">立即购买</button>
 							</div>
 						</div>
 						<div class="submit">
@@ -189,15 +189,11 @@
 						    <li role="presentation"><a href="#review" aria-controls="review" role="tab" data-toggle="tab">商品评价</a></li>
 						</ul>
 						<!-- Tab panes -->
-						<div class="tab-content">
-						    <div role="tabpanel" class="tab-pane active" id="attribute">
-						    	<div class="attribute-content">
-						    		<p>
-						    			<img src=""/>
-						    		</p>
-						    	</div>
+						<div class="tab-content" style="overflow: hidden;width: 100%;">
+						    <div v-html="descData" role="tabpanel" class="tab-pane active" id="attribute">
+
 						    </div>
-						    <div role="tabpanel" class="tab-pane" id="detail">22222222</div>
+						    <div v-html="paramData" role="tabpanel" class="tab-pane" id="detail"></div>
 						    <div role="tabpanel" class="tab-pane" id="review">333</div>
 						</div>
 					</div>
@@ -220,11 +216,14 @@ import Login from "../components/Login"
 export default {
 	data(){
 		return{
-			pic:"https://demo.shopxo.net/static/upload/images/goods/2019/01/14/1547452714324599.jpg",
+			pic:"",
 			s_flag:false,
 			number:1,
 			pre:'123',
-			item:{}
+			itemId:'',
+			item:{},
+			paramData:'',
+			descData:''
 		}
 	},
 	components:{
@@ -252,13 +251,23 @@ export default {
 			}
 		},
 		buyNow(){
-			if(this.$store.state.userInfo==''){
+			if(this.$store.state.userInfo==null){
 				$('#loginPage').modal();
 			}
 		},
 		addBasket(){
-			if(this.$store.state.userInfo==''){
+			if(this.$store.state.userInfo==null){
 				$('#loginPage').modal();
+			}else{
+				const postUrl = "/cmall_cart_api/cart/add/"+this.itemId+".html?num="+this.number;
+			    this.$axios.post(postUrl)
+			      .then(res => {
+			        this.$router.push({path:'/buy'});
+          			this.$router.go(0);
+			      })
+			      .catch(error => {
+			        console.log(error);
+			      })
 			}
 		}
 	},
@@ -269,17 +278,34 @@ export default {
 			el.addClass('tb-selected');
 			that.pre=el.attr('id');
 		});
-		let itemId='';
 		if(this.$route.query.itemId!=null){
-			itemId=this.$route.query.itemId;
+			this.itemId=this.$route.query.itemId;
 		}
-		const postUrl = "/cmall_item_api/item?id="+itemId;
+		let postUrl = "/cmall_item_api/item?id="+this.itemId;
 	    this.$axios.post(postUrl)
 	      .then(res => {
 	      	let newData=eval(res.data.substring(4));
 	      	that.item=newData;
 	      	that.pic=that.item.images[0];
 	        console.log(newData);
+	      })
+	      .catch(error => {
+	        console.log(error);
+	      });
+	    postUrl = "/cmall_item_api/item/desc/"+this.itemId;
+	    this.$axios.post(postUrl)
+	      .then(res => {
+	        console.log(res);
+	        this.descData=res.data;
+	      })
+	      .catch(error => {
+	        console.log(error);
+	      });
+	    postUrl = "/cmall_item_api/item/param/"+this.itemId;
+	    this.$axios.post(postUrl)
+	      .then(res => {
+	        console.log(res);
+	        this.paramData=res.data;
 	      })
 	      .catch(error => {
 	        console.log(error);
@@ -592,7 +618,7 @@ button {
     left: 50%;
     margin-left: -5px;
 }
-.tab-container .attribute-content{
-	width: 100%;
+.tab-pane{
+	float: left;
 }
 </style>
