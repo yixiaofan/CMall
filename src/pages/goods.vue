@@ -34,14 +34,14 @@
 							<div class="items price iteminfo_price">
 								<dt>原价</dt>
 								<dd>
-									<b class="sys_item_mktprice">¥ {{item.price+55}}</b>
+									<b class="sys_item_mktprice">¥ {{(item.price/100+50).toFixed(2)}}</b>
 								</dd>
 							</div>
 							<div class="items price iteminfo_mktprice">
 								<dt>促销价</dt>
 								<dd>
 									<em>¥</em>
-									<b class="sys_item_price">{{item.price}}</b>
+									<b class="sys_item_price">{{(item.price/100).toFixed(2)}}</b>
 								</dd>
 							</div>
 						</div>
@@ -190,11 +190,25 @@
 						</ul>
 						<!-- Tab panes -->
 						<div class="tab-content" style="overflow: hidden;width: 100%;">
-						    <div v-html="descData" role="tabpanel" class="tab-pane active" id="attribute">
-
-						    </div>
+						    <div v-html="descData" role="tabpanel" class="tab-pane active" id="attribute"></div>
 						    <div v-html="paramData" role="tabpanel" class="tab-pane" id="detail"></div>
-						    <div role="tabpanel" class="tab-pane" id="review">333</div>
+						    <div role="tabpanel" class="tab-pane" id="review">
+						    	<table class="review">
+						    		<tbody>
+						    			<tr v-for="(review,index) in reviews" :key="index">
+								    		<td class="review-content">
+								    			<div class="review-content-main" v-html="review.content"></div>
+								    			<div class="review-content-date">{{myformatDate(review.updated)}}</div>
+								    		</td>
+								    		<td class="review-meta"></td>
+								    		<td class="review-user">
+								    			<div class="review-user-name">{{review.buyerNick}}</div>
+								    		</td>
+								    	</tr>
+						    		</tbody>
+						    	</table>
+						    	<Page :styles="mystyle" @on-change="changePage" :total="total" />
+						    </div>
 						</div>
 					</div>
 				</div>
@@ -212,6 +226,7 @@ import ShopNav from "../components/Shop_nav"
 import GoodsCategory from "../components/Goods_category"
 import IndexFooter from "../components/Index_footer"
 import Login from "../components/Login"
+import {formatDate} from '../../static/js/date.js'
 
 export default {
 	data(){
@@ -223,7 +238,14 @@ export default {
 			itemId:'',
 			item:{},
 			paramData:'',
-			descData:''
+			descData:'',
+			mystyle:{
+            	"border":"none",
+            	"margin-top":"20px",
+            	"float": "right"
+           	},
+           	total:0,
+           	reviews:[]
 		}
 	},
 	components:{
@@ -269,6 +291,23 @@ export default {
 			        console.log(error);
 			      })
 			}
+		},
+		changePage(page){
+        	this.$axios({
+			    method: 'post',
+			    url:"/cmall_review_api/review/list?itemid="+this.itemId+"&page="+page+"&rows=10",
+			}).then(res => {
+		        //console.log(res.data.rows);
+		        this.total=res.data.total;
+		        this.reviews=res.data.rows;
+		    })
+		    .catch(error => {
+		        console.log(error);
+		    })
+        },
+        myformatDate(time){
+			let date=new Date(time);
+			return formatDate(date, 'yyyy-MM-dd')
 		}
 	},
 	mounted(){
@@ -309,7 +348,8 @@ export default {
 	      })
 	      .catch(error => {
 	        console.log(error);
-	      })
+	      });
+	     this.changePage(1);
 	}
 }
 </script>
@@ -620,5 +660,45 @@ button {
 }
 .tab-pane{
 	float: left;
+	width: 100%;
+	text-align: left;
+}
+.review{
+	border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    text-align: left;
+}
+.review td{
+	padding: 16px 7px;
+    border-bottom: 1px solid #e3e3e3;
+}
+.review .review-content{
+	width: 70%;
+	padding-right: 25px;
+}
+.review .review-content-main{
+	word-wrap: break-word;
+    word-break: break-all;
+    line-height: 19px;
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+.review .review-content-date{
+	clear: both;
+    color: #ccc;
+}
+.review .review-meta{
+	width: 10%;
+}
+.review .review-user{
+	width: 20%;
+	padding-right: 0px;
+}
+.review .review-user-name{
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
 }
 </style>

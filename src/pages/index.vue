@@ -23,7 +23,7 @@
 					<span class="c-badge c-badge-danger c-round hot-icon">1</span>
 				</li>
 				<li>
-					<router-link to="/user">
+					<router-link to="/center/user">
 						<i class="iconfont">&#xe78c;</i>
 						我的
 					</router-link>

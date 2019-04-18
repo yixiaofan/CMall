@@ -59,6 +59,13 @@ module.exports = {
     		pathRewrite:{
     			'^/cmall_order_api':''
     		}
+    	},
+    	"/cmall_review_api":{
+    		target:"http://127.0.0.1:8087",
+    		changeOrigin:true,
+    		pathRewrite:{
+    			'^/cmall_review_api':''
+    		}
     	}
     },
 

@@ -26,7 +26,7 @@
 				</div>
 				<div class="top-nav-items">
 					<div class="c-dropdown menu-hd login-event">
-						<a href="javascript:void(0);" data-toggle="modal" data-target="#loginPage" class="c-dropdown-toggle">
+						<a href="http://127.0.0.1:8080/#/trade" data-toggle="modal" :data-target="$store.state.userInfo==null?'':'#loginPage'" class="c-dropdown-toggle">
 							<i class="iconfont">&#xe604;</i>
 							<span>我的交易</span>
 							<i class="iconfont">&#xe606;</i>
@@ -44,7 +44,7 @@
 				</div>
 				<div class="top-nav-items top-nav-mini-cart">
 					<div class="menu-hd login-event">
-						<a href="javascript:void(0);" data-toggle="modal" data-target="#loginPage" class="mc-menu-hd">
+						<a href="http://127.0.0.1:8080/#/buy" data-toggle="modal" :data-target="$store.state.userInfo==null?'':'#loginPage'" class="mc-menu-hd">
 							<i class="iconfont">&#xe6b9;</i>
 							<span>购物车</span>
 							<strong class="common-cart-total c-round">0</strong>
@@ -80,7 +80,7 @@ export default {
 		        if(res.data.status==200){
 		        	this.$store.commit('set_userInfo',null);
 		        }else{
-		        	
+		        	this.$Message.error('退出账号失败!');
 		        }
 		      })
 		      .catch(error => {

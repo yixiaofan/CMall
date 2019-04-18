@@ -6,47 +6,9 @@
 		<GoodsCategory :f1="s_flag" />
 		<div class="mycontainer">
 			<div class="link-list">
-				<!-- 地址 start -->
-				<div class="address">
-					<div class="control">
-						<h3>确认收货地址</h3>
-						<button class="btn-address">使用新地址</button>
-					</div>
-					<ul class="address-list">
-						<li class="address-default">
-							<div class="address-left">
-								<div class="user-base">
-									<span class="c-badge">默认</span>
-									<span class="address-detail">
-										<span class="user">。。。。</span>
-										<span class="phone">13854751234</span>
-									</span>
-								</div>
-								<div class="region">
-									<span class="province">四川省</span>
-									<span class="city">成都市</span>
-									<span class="dist">郫都区</span>
-									<span class="street">红光镇</span>
-								</div>
-							</div>
-							<div class="address-right">
-								<span class="c-show-sm-only">&gt;</span>
-							</div>
-							<div class="address-operation-btn">
-								<a href="#"><i class="iconfont">&#xe643;</i>设为默认</a>
-								<span class="cut">|</span>
-								<a href="#"><i class="iconfont">&#xe612;</i>编辑</a>
-								<span class="cut">|</span>
-								<a href="#"><i class="iconfont">&#xe608;</i>删除</a>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<!-- 地址 end -->
 				<!-- 商品列表 start -->
 				<div class="order-detail">
 					<div class="goods-table">
-						<h3>确认订单信息</h3>
 						<table class="table">
 							<thead>
 								<tr>
@@ -102,44 +64,17 @@
 								</tr>
 							</tbody>
 						</table>
-						<div class="buy-message">
-							<div class="order-extra">
-								<div class="order-user-info">
-									<div class="memo">
-										<label>给卖家留言：</label>
-										<input type="text" class="memo-input" placeholder="选填,建议填写和卖家达成一致的说明" />
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="buy-point-discharge">
-							<p>合计（含运费）<span>¥</span><em class="pay-sum">{{total}}</em></p>
-						</div>
-						<div class="order-nav">
-							<div class="pay-confirm">
-								<div class="buy-box">
-									<div class="base-real-pay">
-										<em>实付款：</em>
-										<span class="price">
-											<span>¥</span>
-											<em class="nav-total-price">{{total}}</em>
-										</span>
-									</div>
-									<div class="pay-address">
-										<div class="buy-footer-address">
-											<span class="buy-line-title buy-line-title-type">寄送至：</span>
-											<span class="buy-address-detail">四川省 成都市 郫都区 红光镇</span>
-										</div>
-										<div class="buy-footer-address">
-											<span class="buy-line-title">收货人：</span>
-											<span class="buy-user">。。。。</span>
-											<span class="buy-phone">13854751234</span>
-										</div>
-									</div>
-								</div>
-								<div class="go-btn-wrap">
-									<button class="btn-go btn-loading-example">提交订单</button>
-								</div>
+						
+						<div class="cart-nav" style="position: relative; bottom: 0px; z-index: 0; width: 100%;">
+							<div class="nav-right fr">
+								<span class="selected-tips fl">
+									已选商品
+									<strong>{{number}}</strong>
+									件
+								</span>
+								<span class="total-price-tips fl">合计：</span>
+								<strong class="nav-total-price fl">￥{{total}}</strong>
+								<button @click="showCartOrder" class="btn btn-primary separate-submit">结算</button>
 							</div>
 						</div>
 					</div>
@@ -164,10 +99,10 @@ export default {
 	data(){
 		return{
 			s_flag:false,
-			number:1,
 			cartList:[],
 			total:0,
-			allState:true
+			allState:true,
+			number:0
 		}
 	},
 	components:{
@@ -190,6 +125,7 @@ export default {
 		      .then(res => {
 		        console.log(res);
 		        this.computeTotal(this.cartList);
+		        this.computeItemNum(this.cartList);
 		      })
 		      .catch(error => {
 		        console.log(error);
@@ -211,6 +147,7 @@ export default {
 		      .then(res => {
 		        console.log(res);
 		        this.computeTotal(this.cartList);
+		        this.computeItemNum(this.cartList);
 		      })
 		      .catch(error => {
 		        console.log(error);
@@ -225,6 +162,15 @@ export default {
 	        }
 	        this.total=sum.toFixed(2);
 		},
+		computeItemNum(data){
+			let sum=0;
+	        for(let i in data){
+	        	if(data[i].state){
+	        		sum+=data[i].num;
+	        	}
+	        }
+	        this.number=sum;
+		},
 		checkItem(cart){
 			cart.state=!cart.state;
 			let temp=true;
@@ -236,6 +182,7 @@ export default {
 			}
 			this.allState=temp;
 			this.computeTotal(this.cartList);
+			this.computeItemNum(this.cartList);
 		},
 		checkAllItem(){
 			this.allState=!this.allState;
@@ -243,6 +190,7 @@ export default {
 				this.cartList[i].state=this.allState;
 			}
 			this.computeTotal(this.cartList);
+			this.computeItemNum(this.cartList);
 		},
 		deleteItem(cart){
 			const postUrl = "/cmall_cart_api/cart/delete/"+cart.id;
@@ -256,10 +204,32 @@ export default {
 					}
 				}
 		        this.computeTotal(this.cartList);
+		        this.computeItemNum(this.cartList);
 		      })
 		      .catch(error => {
 		        console.log(error);
 		      });
+		},
+		showCartOrder(){
+			let ids="";
+			for(let i in this.cartList){
+				if(this.cartList[i].state){
+					ids+="id="+this.cartList[i].id;
+					if(i<this.cartList.length-1){
+						ids+="&"
+					}
+				}
+			}
+			console.log(ids);
+			const postUrl = "/cmall_order_api/order/order-cart?"+ids;
+	    	this.$axios.get(postUrl)
+			.then((res)=>{
+				console.log(res);
+				this.$router.push({name:'Order',params:{cartList:res.data}});
+			})
+			.catch(error => {
+		        console.log(error);
+		    })
 		}
 	},
 	mounted(){
@@ -272,6 +242,7 @@ export default {
 	        }
 	        this.cartList=res.data;
 	        this.computeTotal(this.cartList);
+	        this.computeItemNum(this.cartList);
 	      })
 	      .catch(error => {
 	        console.log(error);
@@ -281,83 +252,6 @@ export default {
 </script>
 
 <style scoped lang="css">
-h3 {
-    font-size: 14px;
-    font-weight: 700;
-}
-.address h3 {
-    border-bottom: none;
-}
-.link-list h3 {
-    padding: 0 0 5px 5px;
-}
-.btn-address{
-	color: #d13b49 !important;
-    background-color: #ffcbd0;
-    border-color: #ffcbd0;
-    display: inline-block;
-    margin-bottom: 0;
-    padding: 0.5em 1em;
-    vertical-align: middle;
-    font-weight: normal;
-    line-height: 1.2;
-    text-align: center;
-    border: 1px solid transparent;
-}
-ul.address-list, .business-item ul {
-    overflow: hidden;
-}
-ul.address-list li {
-    display: block !important;
-    width: 100%;
-    padding: 10px;
-    position: relative;
-    min-height: 80px;
-}
-.address-left {
-    width: calc(100% - 25px);
-    float: left;
-    position: relative;
-}
-ul.address-list li .user-base {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-.c-badge{
-	display: inline-block;
-    min-width: 10px;
-    font-size: 12.2px;
-    font-weight: bold;
-    color: #fff;
-    line-height: 1;
-    vertical-align: baseline;
-    white-space: nowrap;
-    text-align: center;
-    background-color: #5eb95e;
-    padding: 0.25em 0.5em;
-    border-radius: 2px;
-}
-.address-right {
-    float: right;
-    margin-right: 5px;
-    padding-top: 15px;
-}
-.address-operation-btn i{
-	font-size: 12px;
-}
-.address-operation-btn {
-    display: none;
-    font-size: 12px;
-    color: #282828;
-    text-align: right;
-    padding-right: 5px;
-}
-.address-operation-btn .cut {
-    padding: 0 5px;
-    color: #ccc;
-    vertical-align: top;
-}
 .order-detail h3, .business-item h3 {
     border-bottom: 3px solid #e3e3e3;
     margin-top: 15px;
@@ -395,15 +289,15 @@ ul.address-list li .user-base {
     color: #9c9c9c;
     text-decoration: line-through;
 }
-.line-price, strong.total-price-content {
+.line-price, strong.total-price-content, .nav-total-price {
     font-weight: 700;
-    font-family: Verdana,Tahoma,arial;
 }
-strong.total-price-content {
+strong.total-price-content, .selected-tips strong, .nav-total-price {
     color: #d2364c;
+}
+.selected-tips strong, .nav-total-price {
     font-size: 16px;
 }
-
 .input-group{
 	display: inline-flex;
 }
@@ -435,59 +329,28 @@ strong.total-price-content {
     color: #d2364c;
     font-size: 16px;
 }
-.buy-message {
-    padding: 0px 5px;
+.cart-nav {
+    background: #eee;
+    height: 50px;
+    line-height: 46px;
 }
-label {
-    display: inline-block;
-    margin-bottom: 5px;
-    font-weight: bold;
+.selected-tips {
+    margin-right: 15px;
 }
-.memo-input {
-    width: calc(100% - 64px);
-    border: 1px solid #ccc;
-    padding: 5px;
-    outline: none;
-    border-radius: 2px;
-    vertical-align: middle;
+.cart-nav .separate-submit {
+    height: 50px;
+    width: 100px;
+    font-size: 20px;
+    font-weight: 500;
 }
-.buy-point-discharge {
-    font-size: 14px;
-    font-weight: 700;
-    padding: 10px 5px;
-    text-align: right;
+.btn-primary{
+	color: #d13b49 !important;
+    background-color: #ffcbd0;
+    border-color: #ffcbd0;
 }
-.pay-sum {
-    color: #d2364c;
-    margin-left: 5px;
-}
-.order-nav {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
-.buy-box {
-    float: left;
-    width: 70%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-align: right;
-    padding-right: 10px;
-}
-.pay-address {
-    display: none;
-}
-.btn-go {
-    float: left;
-    width: 30%;
-    color: #fff;
-    background: #d2364c;
-    text-align: center;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    border: 0;
+.btn-primary:hover{
+	color: #fff !important;
+    border-color: #f77682;
+    background-color: #f77682;
 }
 </style>

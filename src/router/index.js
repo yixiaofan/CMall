@@ -9,11 +9,25 @@ import Search from '@/pages/search'
 import Goods from '@/pages/goods'
 import Buy from '@/pages/buy'
 import Admin from '@/pages/admin'
+import Order from '@/pages/order'
+import Center from '@/pages/center'
+import RateWrite from '@/pages/centerPages/ratewrite'
+import Trade from '@/pages/centerPages/trade'
+import Personal from '@/pages/centerPages/personal'
+import Saveinfo from '@/pages/centerPages/saveinfo'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+  	{
+  		path:"/order",
+  		name:"Order",
+  		meta: {
+	      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+	    },
+  		component:Order
+  	},
   	{
   		path:"/admin",
   		name:"Admin",
@@ -27,6 +41,9 @@ export default new Router({
   	{
   		path:"/buy",
   		name:"Buy",
+  		meta: {
+	      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+	    },
   		component:Buy
   	},
   	{
@@ -50,11 +67,60 @@ export default new Router({
       	},
       	{
       		path: 'shoppingBasket',
+      		meta: {
+			      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+			    },
       		component: ShoppingBasket
       	},
       	{
-      		path: 'user',
-      		component: User
+      		path:"/center",
+		  		name:"Center",
+		  		component:Center,
+		  		meta: {
+			      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+			    },
+		  		redirect:"/center/user",
+		  		children:[
+		      	{
+		      		path: 'user',
+		      		meta: {
+					      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+					    },
+      				component: User
+		      	},
+		      	{
+		      		path:"ratewrite",
+				  		name:"RateWrite",
+				  		meta: {
+					      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+					    },
+				  		component:RateWrite
+		      	},
+		      	{
+		      		path:"trade",
+				  		name:"Trade",
+				  		meta: {
+					      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+					    },
+				  		component:Trade
+		      	},
+		      	{
+		      		path:"personal/index",
+				  		name:"Personal",
+				  		meta: {
+					      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+					    },
+				  		component:Personal
+		      	},
+		      	{
+		      		path:"personal/saveinfo",
+				  		name:"Saveinfo",
+				  		meta: {
+					      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+					    },
+				  		component:Saveinfo
+		      	}
+      		]
       	}
       ]
     }

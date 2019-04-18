@@ -45,6 +45,10 @@ export default {
 <style>
 @import "assets/font/iconfont.css";
 
+.mycontainer{
+	padding: 0px !important;
+}
+
 @media only screen and (min-width: 768px){
 	.mobile-navigation {
     display: none;
@@ -419,6 +423,30 @@ export default {
     width: auto !important;
     overflow-y: visible !important;
     min-height: 100%;
+	}
+	.business-item ul li {
+    width: calc(25% - 8px) !important;
+	}
+	.cart-nav .nav-total-price {
+    margin-right: 5px;
+	}
+	.center{
+		padding-top: 10px !important;
+	}
+	.center-sidebar{
+		display: block !important;
+    position: relative !important;
+    background: none;
+    border-top: 5px solid #ED5564;
+    z-index: 0;
+	}
+	.my-offcanvas-bar {
+    position: static !important;
+    width: auto !important;
+    background: none !important;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    overflow-y: hidden !important;
 	}
 }
 @media only screen and (min-width: 992px){
@@ -1065,6 +1093,13 @@ export default {
 	.buy-point-discharge {
     padding: 10px 0px !important;
 	}
+	.business-item ul {
+    padding: 10px 1px 0 1px !important;
+    overflow: hidden !important;
+	}
+	.business-item ul li {
+    width: calc(20% - 8px) !important;
+	}
 }
 @media only screen and (min-width: 1200px){
 	.mycontainer, .nav-search, .footer, .nav-table {
@@ -1238,6 +1273,16 @@ export default {
 	.various .c-panel-default > .c-panel-hd {
     border-bottom: 1px solid #f1f1f1;
 	}
+	.modal-sm{
+		margin: 0px !important;
+    width: 100% !important;
+    height: 380px !important;
+    position: fixed !important;
+    bottom: 0px !important;
+	}
+	.modal-content{
+		height: 100% !important;
+	}
 }
 @media only screen and (max-width: 1200px){
 	.c-accordion-gapped{
@@ -1245,9 +1290,6 @@ export default {
 	}
 }
 
-.mycontainer{
-	padding: 0px !important;
-}
 .ellipsis {
     text-overflow: ellipsis;
     overflow: hidden;

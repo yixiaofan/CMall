@@ -82,7 +82,20 @@ let store =new Vuex.Store({
 	}
 })
 Vue.use(uploader, store);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+router.beforeEach((to, from, next) => {
+  //判断要去的路由有没有requireAuth
+  if(to.meta.requireAuth){
+  	let _ticket= document.cookie;
+    if(_ticket.indexOf("TT_TOKEN") != -1){
+    	next();
+    }else{
+      	$('#loginPage').modal();
+    }
+  }else{
+    next();//如果无需token,那么随它去吧
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({
