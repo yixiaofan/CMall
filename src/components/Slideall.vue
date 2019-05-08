@@ -23,21 +23,24 @@
 			        <div class="item active">
 				        <div class="ticker-headline">
 				            <a href="#">
-				              滚动新闻内容。。。
+				              <span>[关于我们]</span>
+				              <span style="color: red;">关于CMall</span>
 				            </a>
 				        </div>
 			        </div>
 			        <div class="item">
 				        <div class="ticker-headline">
 				            <a href="#">
-				              22222222
+				              <span>[关于我们]</span>
+				              <span>联系我们</span>
 				            </a>
 				        </div>
 			        </div>
 					<div class="item">
 				        <div class="ticker-headline">
 				            <a href="#">
-				              333333
+				              <span>[关于我们]</span>
+				              <span>招聘英才</span>
 				            </a>
 				        </div>
 			        </div>

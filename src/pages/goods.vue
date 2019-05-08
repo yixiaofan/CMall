@@ -49,19 +49,19 @@
 							<li class="tm-ind-item tm-ind-sellCount canClick">
 								<div class="tm-indcon">
 									<span class="tm-label">累计销量</span>
-									<span class="tm-count">1</span>
+									<span class="tm-count">135</span>
 								</div>
 							</li>
 							<li class="tm-ind-item tm-ind-sellCount canClick">
 								<div class="tm-indcon">
 									<span class="tm-label">浏览次数</span>
-									<span class="tm-count">251</span>
+									<span class="tm-count">{{item.cid}}</span>
 								</div>
 							</li>
 							<li class="tm-ind-item tm-ind-sellCount canClick">
 								<div class="tm-indcon">
 									<span class="tm-label">累计评价</span>
-									<span class="tm-count">1</span>
+									<span class="tm-count">{{total}}</span>
 								</div>
 							</li>
 						</ul>
@@ -90,15 +90,15 @@
 																<strong>-</strong>
 															</button>
 														</div>
-														<input type="text" class="text-box" :value="number" />
+														<input type="text" class="text-box" v-model="number" />
 														<div class="input-group-append">
-															<button @click="number++" class="btn-label" type="button">
+															<button @click="asc" class="btn-label" type="button">
 																<strong>+</strong>
 															</button>
 														</div>
 													</div>
 													<span class="tb-hidden stock-tips">
-														库存<span class="stock">434</span>部
+														库存<span class="stock">{{item.num}}</span>部
 													</span>
 												</dd>
 											</div>
@@ -256,7 +256,21 @@ export default {
 		Login,
 		IndexFooter
 	},
+	watch: {
+	    number: function (val) {
+	      if(val<1){
+	      	this.number=1;
+	      }else if(val>this.item.num){
+	      	this.number=this.item.num;
+	      }
+	    }
+	},
 	methods:{
+		asc:function(){
+			if(this.number<this.item.num){
+				this.number++;
+			}
+		},
 		des:function(){
 			if(this.number>1){
 				this.number--;

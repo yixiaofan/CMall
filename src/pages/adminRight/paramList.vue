@@ -35,7 +35,6 @@ export default {
 			modal1: false,
 			modal2: false,
 			pBody:[{css:"glyphicon glyphicon-plus",text:"新增",method:"openModal1"},
-			{css:"glyphicon glyphicon-pencil",text:"编辑",method:""},
 			{css:"glyphicon glyphicon-remove",text:"删除",method:"deleteParams",param:"-1"}],
 			pColumns: [
                 {

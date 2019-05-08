@@ -254,25 +254,33 @@ export default {
 			if(title==""||price<=0||num<=0||image.length==0||cid==-1){
 				this.$Modal.error({title: "提示",content: "还有参数未填写或参数填写不合格"});
 			}else{
+				let formData=new FormData();
+				let item={};
+				item.cid=cid;
+				item.title=title;
+				item.sellPoint=sellPoint;
+				item.price=price;
+				item.num=num;
+				item.barcode=barcode;
+				item.image=image;
+				let itemStr=JSON.stringify(item);
+				formData.append('itemStr',itemStr);
+				formData.append('desc',desc);
+				formData.append('itemParams',itemParams);
 				this.$axios({
-				    method: 'get',
+				    method: 'post',
 				    url:"/cmall_manage_api/item/save",
-				    params: {
-				        "cid":cid,
-				        "title":title,
-				        "sellPoint":sellPoint,
-				        "price":price,
-				        "num":num,
-				        "barcode":barcode,
-				        "image":image,
-				        "desc":desc,
-				        "itemParams":itemParams
-				    }
+				    headers: {'Content-Type': 'application/json'},
+				    data: formData
 				}).then((res)=>{
-					console.log(res);
+					//console.log(res);
+					if(res.status==200){
+						this.$Message.success('商品新增成功!');
+					}
 				})
 				.catch(error => {
 			        console.log(error);
+			        this.$Message.error('服务器错误!');
 			   })
 			}
 		}

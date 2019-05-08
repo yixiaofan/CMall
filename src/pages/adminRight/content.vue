@@ -37,9 +37,7 @@ export default {
 	data () {
         return {
             split1: 0.2,
-            pBody:[{css:"glyphicon glyphicon-plus",text:"新增",method:"openModal1"},
-			{css:"glyphicon glyphicon-pencil",text:"编辑",method:""},
-			{css:"glyphicon glyphicon-remove",text:"删除",method:"openModal1"}],
+            pBody:[{css:"glyphicon glyphicon-plus",text:"新增",method:"openModal1"}],
 			pColumns: [
                 {
                     title: 'ID',

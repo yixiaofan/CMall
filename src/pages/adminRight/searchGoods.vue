@@ -21,7 +21,6 @@ export default {
 	data(){
 		return{
 			pBody:[{css:"glyphicon glyphicon-plus",text:"新增",method:"addGoods"},
-			{css:"glyphicon glyphicon-pencil",text:"编辑"},
 			{css:"glyphicon glyphicon-remove",text:"删除",method:"changeStatus",param:"3"},
 			{css:"glyphicon glyphicon-minus",text:"下架",method:"changeStatus",param:"2"},
 			{css:"glyphicon glyphicon-minus",text:"上架",method:"changeStatus",param:"1"}],

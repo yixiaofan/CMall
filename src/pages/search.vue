@@ -13,11 +13,11 @@
 							<img :src="item.images[0]" @error="imgError(item)"/>
 						</a>
 						<a :href="'http://127.0.0.1:8080/#/goods?itemId='+item.id">
-							<p class="title">{{item.title}}</p>
+							<p class="title" v-html="item.title"></p>
 						</a>
 						<p class="price">
 							<b>¥</b>
-							<strong>{{item.price}}</strong>
+							<strong>{{(item.price/100).toFixed(2)}}</strong>
 						</p>
 						<p class="number">销量<span>0</span></p>
 					</div>
@@ -182,5 +182,9 @@ export default {
 	text-align: center;
 	font-size: 16px;
 	font-weight: bold;
+}
+.search .limit img{
+	max-width: 150px;
+	max-height: 150px;
 }
 </style>

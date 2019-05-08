@@ -7,7 +7,7 @@
 					<div v-if="$store.state.userInfo==null" class="menu-hd">
 						<span>您好，欢迎来到 CMall</span>
 						[<a href="javascript:void(0);" data-toggle="modal" data-target="#loginPage">登录</a>]
-						[<a href="#">注册</a>]
+						[<a href="javascript:void(0);" data-toggle="modal" data-target="#registerPage">注册</a>]
 					</div>
 					<div v-else class="menu-hd">
 						<span>您好 {{$store.state.userInfo.username}}, 欢迎来到 CMall</span>
@@ -47,7 +47,7 @@
 						<a href="http://127.0.0.1:8080/#/buy" data-toggle="modal" :data-target="$store.state.userInfo==null?'':'#loginPage'" class="mc-menu-hd">
 							<i class="iconfont">&#xe6b9;</i>
 							<span>购物车</span>
-							<strong class="common-cart-total c-round">0</strong>
+							<strong class="common-cart-total c-round">{{catNumber}}</strong>
 						</a>
 					</div>
 				</div>
@@ -67,6 +67,11 @@
 
 <script>
 export default {
+	data(){
+		return{
+			catNumber:0
+		}
+	},
 	methods:{
 		logout(){
 		  	let _ticket=this.$cookie.get("TT_TOKEN");
@@ -87,6 +92,20 @@ export default {
 		        console.log(error);
 		      })
 		}
+	},
+	mounted(){
+		const postUrl = "/cmall_cart_api/cart/cart";
+	    this.$axios.post(postUrl)
+	      .then(res => {
+	        console.log(res);
+	        for(let i in res.data){
+	        	res.data[i].state=true;
+	        }
+	        this.catNumber=res.data.length;
+	      })
+	      .catch(error => {
+	        console.log(error);
+	      });
 	}
 }
 </script>

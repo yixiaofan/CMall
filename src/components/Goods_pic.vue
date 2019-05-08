@@ -46,7 +46,7 @@ export default {
 	    	//console.log(this.imgStore);
 	    	this.imgStore.forEach((item, index) => {
 	    		if(this.mypath==""||index<2){
-	    			//console.log(index);
+	    			//console.log(item.file);
 	    			formData.append("uploadFile",item.file,item.name);
 	    		}
 	    		//console.log(formData);

@@ -57,6 +57,10 @@
 			            :options="editorOption">
 			        </quill-editor>
 			    </div>
+			    <form id="upload" class="hidden" enctype="multipart/form-data" method="post">     <!--用来上传图片-->
+			      	<input type="file" name="image" id="selectImg" accept="image/gif, image/jpeg, image/png" @change="inputChangeImg" multiple/>
+			      	<input type="button" value="提交"/>
+			    </form>
 			</div>
 			<div class="form-group" v-else-if="item.type=='jsonData'&& $store.state.select_class_data.length!=0">
 			    <label :for="item.id" class="control-label col-xs-1" style="padding: 0px;">{{item.label}}</label>
@@ -86,9 +90,43 @@ import 'quill/dist/quill.bubble.css';
 
 export default {
 	data(){
+		const toolbarOptions = [
+		    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+		    ['blockquote', 'code-block'],
+		 
+		    [{'header': 1}, {'header': 2}],               // custom button values
+		    [{'list': 'ordered'}, {'list': 'bullet'}],
+		    [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+		    [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+		    [{'direction': 'rtl'}],                         // text direction
+		 
+		    [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
+		    [{'header': [1, 2, 3, 4, 5, 6, false]}],
+		 
+		    [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+		    [{'font': []}],
+		    [{'align': []}],
+		    ['link', 'image', 'video'],
+		    ['clean']                                         // remove formatting button
+		];
 		return{
 			content:null,
-            editorOption:{},
+            editorOption: {
+		        modules: {
+		            toolbar: {
+		                container: toolbarOptions,  // 工具栏
+		                handlers: {
+		                    'image': function (value) {
+								if (value) {
+		                            document.getElementById("selectImg").click();
+		                        } else {
+		                            this.quill.format('image', false);
+		                        }
+		                    }
+		                }
+		            }
+		        }
+		    },
             data:[],
 			value:''
 		}
@@ -145,7 +183,43 @@ export default {
 				this.value="";
 			});
 			this.content=null;
-		}
+		},
+		handleSuccess (url) {
+		    let quill = this.$refs.myquillEditor[0].quill;
+		    // 获取光标所在位置
+		    let length = quill.getSelection().index;
+		    // 插入图片 
+		    quill.insertEmbed(length, 'image', url);
+		    // 调整光标到最后
+		    quill.setSelection(length + 1);
+	   	},
+	    inputChangeImg() { // input 选择图片时的操作
+			let that=this;
+	        let input = document.getElementById('selectImg');
+	        if (input.files && input.files[0]) {
+	          	let formData = new FormData();
+	          	for(let i=0;i<input.files.length;i++){
+	        		let item = input.files[i];
+	        		formData.append("uploadFile",item,item.name);
+	        	}
+	          	this.$axios({
+				    method: 'post',
+				    url:"/cmall_manage_api/pic/upload",
+					data:formData
+				}).then((res)=>{
+					console.log(res);
+					let url=res.data.url;
+					let urls=url.split(",");
+					for(let i=0;i<urls.length;i++){
+						console.log(urls[i]);
+						that.handleSuccess(urls[i]);
+					}	
+				})
+				.catch(error => {
+			        console.log(error);
+			    })
+	        }
+	    }
   	},
 	mounted(){
 		let myitems=this.items;

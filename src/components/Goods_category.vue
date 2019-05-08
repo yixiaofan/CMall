@@ -14,7 +14,7 @@
 							<div class="category-info">
 								<h3 class="category-name b-category-name">
 									<img :src="item.img"/>
-									<a href="#" class="ml-22">{{item.n}}</a>
+									<a :href="'http://127.0.0.1:8080/#/search?searchWord='+item.n" class="ml-22">{{item.n}}</a>
 								</h3>
 								<em>&gt;</em>
 							</div>
@@ -25,12 +25,12 @@
 											<div class="sort-side">
 												<dl class="dl-sort" v-for="item1 of item.i">
 													<dt>
-														<a href="#">
+														<a :href="'http://127.0.0.1:8080/#/search?searchWord='+item1.n">
                                                             <span>{{item1.n}}</span>
                                                         </a>
 													</dt>
 													<dd v-for="item2 of item1.i">
-														<a href="#">
+														<a :href="'http://127.0.0.1:8080/#/search?searchWord='+item2">
                                                             <span>{{item2}}</span>
                                                         </a>
 													</dd>
@@ -55,7 +55,7 @@ export default {
 		return{
 			s_flag:this.f1,
 			jsont:[],
-			img:['../../static/img/20180814174251211789.png',"../../static/img/20180814174638213368.png",
+			img:['../../static/img/20180814174251211789.png',"../../static/img/20180814174311166703.png",
 			"../../static/img/20180814174638213368.png","../../static/img/20180814174649846358.png",
 			"../../static/img/20180814174659916405.png","../../static/img/20180814174708327545.png",
 			"../../static/img/20180814174722490490.png","../../static/img/20180814174732569726.png",

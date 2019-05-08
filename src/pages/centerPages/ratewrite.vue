@@ -89,7 +89,6 @@ export default {
 		}
 	},
 	mounted(){
-
 		let orderid=this.$route.query.orderid;
 		const postUrl = "/cmall_order_api/order/orderitem?orderid="+orderid;
 	    this.$axios.post(postUrl)

@@ -66,6 +66,13 @@ module.exports = {
     		pathRewrite:{
     			'^/cmall_review_api':''
     		}
+    	},
+    	"/cmall_websocket_api":{
+    		target:"http://127.0.0.1:8088",
+    		changeOrigin:true,
+    		pathRewrite:{
+    			'^/cmall_websocket_api':''
+    		}
     	}
     },
 

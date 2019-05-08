@@ -24,7 +24,33 @@ export default {
 //    sessionStorage.setItem("store",JSON.stringify(this.$store.state));
 //  })
   },
-  mounted(){
+  mounted(){   
+	  var  ws;
+	  let that=this;
+		window.onload=connect;
+		function connect(){
+			if ('WebSocket' in window) {
+				ws = new WebSocket("ws://127.0.0.1:8088/websocket");
+			} else if ('MozWebSocket' in window) {
+				ws = new MozWebSocket("ws://127.0.0.1:8088/websocket");
+			} else {
+				//如果是低版本的浏览器，则用SockJS这个对象，对应了后台“sockjs/webSocketServer”这个注册器，
+				//它就是用来兼容低版本浏览器的
+				ws = new SockJS("http://127.0.0.1:8088/sockjs/websocket");
+			}
+			ws.onopen = function (event) {
+				console.log('open', event);
+			};
+			ws.onmessage = function (event) {
+				//console.log('message', event.data);
+				let data=event.data;
+				if(data.indexOf("链接成功!!")==-1){
+					that.$Notice.info({title: '您有新的消息',desc: data});
+				}
+				
+			};
+		}
+  	
   	let _ticket=this.$cookie.get("TT_TOKEN");
   	if(!_ticket){
   		return;

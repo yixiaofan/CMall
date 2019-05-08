@@ -80,6 +80,16 @@ export default {
 			        	console.log(res);
 			        	if(res.data.status==200){
 			        		this.$Message.success('保存成功!');
+			        		let _ticket=this.$cookie.get("TT_TOKEN");
+							const postUrl = "/cmall_login_api/user/token/"+_ticket;
+						    this.$axios.post(postUrl)
+						      .then(res => {
+						        console.log(res);
+						        this.$store.commit('set_userInfo',res.data.data);
+						      })
+						      .catch(error => {
+						        console.log(error);
+						      })
 			        		let that=this;
 			        		setTimeout(function(){
 				            	that.$router.push({path:'/center/personal'});

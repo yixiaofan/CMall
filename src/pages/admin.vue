@@ -6,7 +6,7 @@
 					<li class="panel panel-default">
 						<div class="panel-heading" role="tab" id="heading1">
 							<div class="panel-title first" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
-						        <div id="index" :style="component=='Index'?{color: 'white'}:{color: '#b6b6b6'}" class="panel-text" @click="changeColor('Index');changePage('Index')">首页</div>
+						        <div id="index" :style="component=='Index'?{color: 'white'}:{color: '#b6b6b6'}" class="panel-text" @click="changePage('Index')">首页</div>
 						    </div>
 						</div>
 					</li>
