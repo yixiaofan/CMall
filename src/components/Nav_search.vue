@@ -2,12 +2,12 @@
 	<!-- 搜索框 start -->
 	<div class="nav-search">
 		<div class="logo">
-			<a href="http://127.0.0.1:8080">
+			<a href="http://47.100.242.105:80">
 				<img src="../assets/img/logo.png" />
 			</a>
 		</div>
 		<div class="logo-big">
-			<a href="http://127.0.0.1:8080">
+			<a href="http://47.100.242.105:80">
 				<img src="../assets/img/logo-big.png" />
 			</a>
 		</div>

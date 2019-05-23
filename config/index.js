@@ -12,63 +12,63 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
     	"/cmall_manage_api":{
-    		target:"http://127.0.0.1:80",
+    		target:"http://47.100.242.105:8089",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_manage_api':''
     		}
     	},
     	"/cmall_item_api":{
-    		target:"http://127.0.0.1:8081",
+    		target:"http://47.100.242.105:8081",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_item_api':''
     		}
     	},
     	"/cmall_portal_api":{
-    		target:"http://127.0.0.1:8082",
+    		target:"http://47.100.242.105:8082",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_portal_api':''
     		}
     	},
     	"/cmall_search_api":{
-    		target:"http://127.0.0.1:8083",
+    		target:"http://47.100.242.105:8083",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_search_api':''
     		}
     	},
     	"/cmall_login_api":{
-    		target:"http://127.0.0.1:8084",
+    		target:"http://47.100.242.105:8084",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_login_api':''
     		}
     	},
     	"/cmall_cart_api":{
-    		target:"http://127.0.0.1:8085",
+    		target:"http://47.100.242.105:8085",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_cart_api':''
     		}
     	},
     	"/cmall_order_api":{
-    		target:"http://127.0.0.1:8086",
+    		target:"http://47.100.242.105:8086",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_order_api':''
     		}
     	},
     	"/cmall_review_api":{
-    		target:"http://127.0.0.1:8087",
+    		target:"http://47.100.242.105:8087",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_review_api':''
     		}
     	},
     	"/cmall_websocket_api":{
-    		target:"http://127.0.0.1:8088",
+    		target:"http://47.100.242.105:8088",
     		changeOrigin:true,
     		pathRewrite:{
     			'^/cmall_websocket_api':''
@@ -77,7 +77,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

@@ -9,10 +9,10 @@
 			<ul>
 				<li v-for="(item,index) in itemList" :key="index">
 					<div class="i-pic limit">
-						<a :href="'http://127.0.0.1:8080/#/goods?itemId='+item.id">
+						<a :href="'http://47.100.242.105:80/#/goods?itemId='+item.id">
 							<img :src="item.images[0]" @error="imgError(item)"/>
 						</a>
-						<a :href="'http://127.0.0.1:8080/#/goods?itemId='+item.id">
+						<a :href="'http://47.100.242.105:80/#/goods?itemId='+item.id">
 							<p class="title" v-html="item.title"></p>
 						</a>
 						<p class="price">

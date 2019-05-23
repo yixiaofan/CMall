@@ -1,5 +1,9 @@
 <template lang="html">
 	<div class="ratewrite">
+		<HeaderTop />
+		<NavSearch/>
+		<ShopNav />
+		<GoodsCategory :f1="s_flag" />
 		<div class="user-content-body">
 			<div class="order-goods">
 				<table class="c-table">
@@ -14,11 +18,11 @@
 						<tr v-for="(item,index) in orderItemList" :key="index">
 							<td class="base">
 								<div class="goods-detail">
-									<a :href="'http://127.0.0.1:8080/#/goods?itemId='+item.itemId">
+									<a :href="'http://47.100.242.105:80/#/goods?itemId='+item.itemId">
 										<img :src="item.picPath"/>
 									</a>
 									<div class="goods-base">
-										<a :href="'http://127.0.0.1:8080/#/goods?itemId='+item.itemId" class="goods-title">{{item.title}}</a>
+										<a :href="'http://47.100.242.105:80/#/goods?itemId='+item.itemId" class="goods-title">{{item.title}}</a>
 									</div>
 								</div>
 							</td>
@@ -37,16 +41,33 @@
 				<button @click="addReview" type="submit" class="btn btn-primary">提交</button>
 			</div>
 		</div>
+		<IndexFooter />
+		<Login/>
 	</div>
 </template>
 
 <script>
+import NavSearch from "../components/Nav_search"
+import HeaderTop from "../components/Header_top"
+import ShopNav from "../components/Shop_nav"
+import GoodsCategory from "../components/Goods_category"
+import IndexFooter from "../components/Index_footer"
+import Login from "../components/Login"
+
 export default {
 	data(){
 		return{
 			s_flag:false,
 			orderItemList:[]
 		}
+	},
+	components:{
+		NavSearch,
+		HeaderTop,
+		ShopNav,
+		GoodsCategory,
+		Login,
+		IndexFooter
 	},
 	methods:{
 		addReview(){

@@ -110,7 +110,7 @@
 					</div>
 					<div class="buy-nav">
 						<div class="buy-nav-opt">
-							<a href="http://127.0.0.1:8080">
+							<a href="http://47.100.242.105:80">
 								<span class="c-icon-home c-icon-fw"><i class="iconfont">&#xe6bb;</i>首页</span>
 							</a>
 							<span class="c-icon-heart c-icon-fw favor-submit login-event">

@@ -5,7 +5,7 @@
 			<div class="nav-cont">
 				<ul>
 					<li>
-						<a href="http://127.0.0.1:8080">首页</a>
+						<a href="http://47.100.242.105:80">首页</a>
 					</li>
 					<li>
 						<a href="#">电器城</a>

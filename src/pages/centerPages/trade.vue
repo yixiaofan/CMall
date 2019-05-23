@@ -1,5 +1,9 @@
 <template lang="html">
 	<div class="trade">
+		<HeaderTop />
+		<NavSearch/>
+		<ShopNav />
+		<GoodsCategory :f1="s_flag" />
 		<div class="user-content-body">
 			<div class="meila-radius">
 				<table class="content-title">
@@ -26,11 +30,11 @@
 					<tr v-for="(list,index) in item.orderItems" :key="index">
 						<td class="base row-content">
 							<div class="goods-detail">
-								<a :href="'http://127.0.0.1:8080/#/goods?itemId='+list.itemId">
+								<a :href="'http://47.100.242.105:80/#/goods?itemId='+list.itemId">
 									<img :src="list.picPath"/>
 								</a>
 								<div class="goods-base">
-									<a :href="'http://127.0.0.1:8080/#/goods?itemId='+list.itemId" class="goods-title">{{list.title}}</a>
+									<a :href="'http://47.100.242.105:80/#/goods?itemId='+list.itemId" class="goods-title">{{list.title}}</a>
 									<ul class="goods-attr">
 										<li>颜色：白色</li>
 										<li>尺码：M</li>
@@ -53,7 +57,7 @@
 							</div>
 						</td>
 						<td v-if="index==0" class="row-operate" :rowspan="item.orderItems.length">
-							<a v-if="item.buyerRate==0" class="btn btn-sm" style="color:white;background-color:red;" :href="'http://127.0.0.1:8080/#/center/ratewrite?orderid='+item.orderId">
+							<a v-if="item.buyerRate==0" class="btn btn-sm" style="color:white;background-color:red;" :href="'http://47.100.242.105:80/#/center/ratewrite?orderid='+item.orderId">
 								<i class="iconfont">&#xe669;</i>
 								评价
 							</a>
@@ -71,10 +75,18 @@
 			</table>
 			<Page :styles="mystyle" @on-change="changePage" :total="total" />
 		</div>
+		<IndexFooter />
+		<Login/>
 	</div>
 </template>
 
 <script>
+import NavSearch from "../components/Nav_search"
+import HeaderTop from "../components/Header_top"
+import ShopNav from "../components/Shop_nav"
+import GoodsCategory from "../components/Goods_category"
+import IndexFooter from "../components/Index_footer"
+import Login from "../components/Login"
 import {formatDate} from '../../../static/js/date.js'
 
 export default {
@@ -89,6 +101,14 @@ export default {
            	},
            	total:0
 		}
+	},
+	components:{
+		NavSearch,
+		HeaderTop,
+		ShopNav,
+		GoodsCategory,
+		Login,
+		IndexFooter
 	},
 	methods:{
 		myformatDate(time){

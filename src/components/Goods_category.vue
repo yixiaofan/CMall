@@ -25,12 +25,12 @@
 											<div class="sort-side">
 												<dl class="dl-sort" v-for="item1 of item.i">
 													<dt>
-														<a :href="'http://127.0.0.1:8080/#/search?searchWord='+item1.n">
+														<a :href="'http://47.100.242.105:80/#/search?searchWord='+item1.n">
                                                             <span>{{item1.n}}</span>
                                                         </a>
 													</dt>
 													<dd v-for="item2 of item1.i">
-														<a :href="'http://127.0.0.1:8080/#/search?searchWord='+item2">
+														<a :href="'http://47.100.242.105:80/#/search?searchWord='+item2">
                                                             <span>{{item2}}</span>
                                                         </a>
 													</dd>

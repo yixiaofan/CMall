@@ -25,11 +25,11 @@
 									<td><input @click.stop="checkItem(cart)" type="checkbox" v-model="cart.state"/></td>
 									<td>
 										<div class="goods-detail">
-											<a :href="'http://127.0.0.1:8080/#/goods?itemId='+cart.id">
+											<a :href="'http://47.100.242.105:80/#/goods?itemId='+cart.id">
 												<img :src="cart.images[0]"/>
 											</a>
 											<div class="goods-base">
-												<a :href="'http://127.0.0.1:8080/#/goods?itemId='+cart.id" class="buy-goods-title">{{cart.title}}</a>
+												<a :href="'http://47.100.242.105:80/#/goods?itemId='+cart.id" class="buy-goods-title">{{cart.title}}</a>
 											</div>
 										</div>
 										<div class="wap-base c-show-sm-only">
