@@ -18,7 +18,7 @@
 			<ul class="top-nav-right">
 				<div class="top-nav-items">
 					<div class="menu-hd login-event">
-						<a href="javascript:void(0);" data-toggle="modal" data-target="#loginPage">
+						<a href="http://47.100.242.105/#/center/personal/index" data-toggle="modal" :data-target="$store.state.userInfo==null?'#loginPage':''">
 							<i class="iconfont">&#xe78c;</i>
 							<span>个人中心</span>
 						</a>
@@ -26,7 +26,7 @@
 				</div>
 				<div class="top-nav-items">
 					<div class="c-dropdown menu-hd login-event">
-						<a href="http://47.100.242.105:80/#/trade" data-toggle="modal" :data-target="$store.state.userInfo==null?'':'#loginPage'" class="c-dropdown-toggle">
+						<a href="http://47.100.242.105:80/#/center/trade" data-toggle="modal" :data-target="$store.state.userInfo==null?'#loginPage':''" class="c-dropdown-toggle">
 							<i class="iconfont">&#xe604;</i>
 							<span>我的交易</span>
 							<i class="iconfont">&#xe606;</i>
@@ -44,7 +44,7 @@
 				</div>
 				<div class="top-nav-items top-nav-mini-cart">
 					<div class="menu-hd login-event">
-						<a href="http://47.100.242.105:80/#/buy" data-toggle="modal" :data-target="$store.state.userInfo==null?'':'#loginPage'" class="mc-menu-hd">
+						<a href="http://47.100.242.105:80/#/buy" data-toggle="modal" :data-target="$store.state.userInfo==null?'#loginPage':''" class="mc-menu-hd">
 							<i class="iconfont">&#xe6b9;</i>
 							<span>购物车</span>
 							<strong class="common-cart-total c-round">{{catNumber}}</strong>
@@ -78,11 +78,12 @@ export default {
 		  	if(!_ticket){
 		  		return;
 		  	}
-			const postUrl = "/cmall_login_api/user/logout/"+_ticket;
+			const postUrl = "http://47.100.242.105:8084/user/logout/"+_ticket;
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		        console.log(res);
 		        if(res.data.status==200){
+		        	this.$cookie.delete('TT_TOKEN');
 		        	this.$store.commit('set_userInfo',null);
 		        }else{
 		        	this.$Message.error('退出账号失败!');
@@ -94,7 +95,7 @@ export default {
 		}
 	},
 	mounted(){
-		const postUrl = "/cmall_cart_api/cart/cart";
+		const postUrl = "http://47.100.242.105:8085/cart/cart";
 	    this.$axios.post(postUrl)
 	      .then(res => {
 	        console.log(res);

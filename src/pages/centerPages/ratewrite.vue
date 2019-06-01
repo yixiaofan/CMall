@@ -1,9 +1,5 @@
 <template lang="html">
 	<div class="ratewrite">
-		<HeaderTop />
-		<NavSearch/>
-		<ShopNav />
-		<GoodsCategory :f1="s_flag" />
 		<div class="user-content-body">
 			<div class="order-goods">
 				<table class="c-table">
@@ -41,18 +37,10 @@
 				<button @click="addReview" type="submit" class="btn btn-primary">提交</button>
 			</div>
 		</div>
-		<IndexFooter />
-		<Login/>
 	</div>
 </template>
 
 <script>
-import NavSearch from "../components/Nav_search"
-import HeaderTop from "../components/Header_top"
-import ShopNav from "../components/Shop_nav"
-import GoodsCategory from "../components/Goods_category"
-import IndexFooter from "../components/Index_footer"
-import Login from "../components/Login"
 
 export default {
 	data(){
@@ -60,14 +48,6 @@ export default {
 			s_flag:false,
 			orderItemList:[]
 		}
-	},
-	components:{
-		NavSearch,
-		HeaderTop,
-		ShopNav,
-		GoodsCategory,
-		Login,
-		IndexFooter
 	},
 	methods:{
 		addReview(){
@@ -91,7 +71,7 @@ export default {
 			console.log(itemReviews);
 		    this.$axios({
 			    method: 'post',
-			    url:"/cmall_review_api/review/save",
+			    url:"http://47.100.242.105:8087/review/save",
 			    headers: {'Content-Type': 'application/json'},
 			    data:itemReviews
 			}).then(res => {
@@ -111,7 +91,7 @@ export default {
 	},
 	mounted(){
 		let orderid=this.$route.query.orderid;
-		const postUrl = "/cmall_order_api/order/orderitem?orderid="+orderid;
+		const postUrl = "http://47.100.242.105:8086/order/orderitem?orderid="+orderid;
 	    this.$axios.post(postUrl)
 	      .then(res => {
 	        console.log(res);

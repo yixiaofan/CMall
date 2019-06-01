@@ -1,9 +1,5 @@
 <template lang="html">
 	<div class="trade">
-		<HeaderTop />
-		<NavSearch/>
-		<ShopNav />
-		<GoodsCategory :f1="s_flag" />
 		<div class="user-content-body">
 			<div class="meila-radius">
 				<table class="content-title">
@@ -57,7 +53,7 @@
 							</div>
 						</td>
 						<td v-if="index==0" class="row-operate" :rowspan="item.orderItems.length">
-							<a v-if="item.buyerRate==0" class="btn btn-sm" style="color:white;background-color:red;" :href="'http://47.100.242.105:80/#/center/ratewrite?orderid='+item.orderId">
+							<a v-if="item.buyerRate==0" class="btn btn-sm" style="color:white !important;background-color:red;" :href="'http://47.100.242.105:80/#/center/ratewrite?orderid='+item.orderId">
 								<i class="iconfont">&#xe669;</i>
 								评价
 							</a>
@@ -75,18 +71,10 @@
 			</table>
 			<Page :styles="mystyle" @on-change="changePage" :total="total" />
 		</div>
-		<IndexFooter />
-		<Login/>
 	</div>
 </template>
 
 <script>
-import NavSearch from "../components/Nav_search"
-import HeaderTop from "../components/Header_top"
-import ShopNav from "../components/Shop_nav"
-import GoodsCategory from "../components/Goods_category"
-import IndexFooter from "../components/Index_footer"
-import Login from "../components/Login"
 import {formatDate} from '../../../static/js/date.js'
 
 export default {
@@ -102,21 +90,13 @@ export default {
            	total:0
 		}
 	},
-	components:{
-		NavSearch,
-		HeaderTop,
-		ShopNav,
-		GoodsCategory,
-		Login,
-		IndexFooter
-	},
 	methods:{
 		myformatDate(time){
 			let date=new Date(time);
 			return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
 		},
 		changePage(page){
-        	const postUrl = "/cmall_order_api/order/show?page="+page+"&rows=10";
+        	const postUrl = "http://47.100.242.105:8086/order/show?page="+page+"&rows=10";
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		        console.log(res);

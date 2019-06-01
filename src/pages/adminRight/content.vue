@@ -193,7 +193,7 @@ export default {
         	//console.log(item);
             this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/content/category/list",
+			    url:"http://47.100.242.105:8089/content/category/list",
 			    params: {
 			        "id":item.id
 			    }
@@ -225,7 +225,7 @@ export default {
         getData(id){
         	this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/content/category/list",
+			    url:"http://47.100.242.105:8089/content/category/list",
 			    params: {
 			        "id":id
 			    }
@@ -257,7 +257,7 @@ export default {
         getTableData(id,page,rows){
 			let that=this;
 			that.loading=true;
-			const postUrl = "/cmall_manage_api/content/query/list?categoryId="+id+"&page="+page+"&rows="+rows;
+			const postUrl = "http://47.100.242.105:8089/content/query/list?categoryId="+id+"&page="+page+"&rows="+rows;
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		      	//console.log(res.data);
@@ -269,10 +269,10 @@ export default {
 		      		time=newData.rows[i].updated;
 		      		date=new Date(time);
 		      		newData.rows[i].updated=formatDate(date, 'yyyy-MM-dd hh:mm:ss');
-		      		newData.rows[i].url='<a style="color:blue" href="'+newData.rows[i].url+'">查看</a>';
-		      		newData.rows[i].pic='<a style="color:blue" href="'+newData.rows[i].pic+'">查看</a>';
+		      		newData.rows[i].url='<a style="color:blue !important" href="'+newData.rows[i].url+'">查看</a>';
+		      		newData.rows[i].pic='<a style="color:blue !important" href="'+newData.rows[i].pic+'">查看</a>';
 		      		if(newData.rows[i].pic2!=null&&newData.rows[i].pic2!=""){
-		      			newData.rows[i].pic2='<a style="color:blue" href="'+newData.rows[i].pic2+'">查看</a>';
+		      			newData.rows[i].pic2='<a style="color:blue !important" href="'+newData.rows[i].pic2+'">查看</a>';
 		      		}
 		      	}
 		      	that.pTableData=newData.rows;
@@ -310,7 +310,7 @@ export default {
 				}//console.log(pic2);
 				this.$axios({
 				    method: 'get',
-				    url:"/cmall_manage_api/content/save",
+				    url:"http://47.100.242.105:8089/content/save",
 				    params: {
 				        "categoryId":categoryId,
 				        "title":title,

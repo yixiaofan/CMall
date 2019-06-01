@@ -204,7 +204,7 @@ export default {
 	        	}
 	          	this.$axios({
 				    method: 'post',
-				    url:"/cmall_manage_api/pic/upload",
+				    url:"http://47.100.242.105:8089/pic/upload",
 					data:formData
 				}).then((res)=>{
 					console.log(res);

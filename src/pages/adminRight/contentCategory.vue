@@ -33,7 +33,7 @@ export default {
         	//console.log(item);
             this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/content/category/list",
+			    url:"http://47.100.242.105:8089/content/category/list",
 			    params: {
 			        "id":item.id
 			    }
@@ -65,7 +65,7 @@ export default {
         getData(id){
         	this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/content/category/list",
+			    url:"http://47.100.242.105:8089/content/category/list",
 			    params: {
 			        "id":id
 			    }

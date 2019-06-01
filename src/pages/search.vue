@@ -67,7 +67,7 @@ export default {
 			const that=this;
 			if (that.getScrollBottomHeight() <= that.bottomHight && that.nowPage<=that.totalPages && that.loading == false) {
                 that.loading = true;
-                const postUrl = "/cmall_search_api/search?q="+this.s_word+"&page="+that.nowPage;
+                const postUrl = "http://47.100.242.105:8083/search?q="+this.s_word+"&page="+that.nowPage;
 			    this.$axios.post(postUrl)
 			      .then(res => {
 			      	let newData=eval(res.data.substring(4));
@@ -127,7 +127,7 @@ export default {
 		if(this.$route.query.searchWord!=null){
 			this.s_word=this.$route.query.searchWord;
 		}
-		const postUrl = "/cmall_search_api/search?q="+this.s_word;
+		const postUrl = "http://47.100.242.105:8083/search?q="+this.s_word;
 		that.loading = true;
 	    this.$axios.post(postUrl)
 	      .then(res => {

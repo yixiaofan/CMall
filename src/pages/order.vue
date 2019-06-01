@@ -203,7 +203,7 @@ export default {
 			//console.log(param);
 			this.$axios({
 			    method: 'post',
-			    url:"/cmall_order_api/order/create",
+			    url:"http://47.100.242.105:8086/order/create",
 			    headers: {'Content-Type': 'application/json'},
 			    data:param
 			}).then((res)=>{
@@ -216,7 +216,7 @@ export default {
 				//console.log(info);
 			    this.$axios({
 				    method: 'post',
-				    url:"/cmall_order_api/order/payment",
+				    url:"http://47.100.242.105:8086/order/payment",
 				    headers: {'Content-Type': 'application/json'},
 				    data:info
 				}).then(res => {

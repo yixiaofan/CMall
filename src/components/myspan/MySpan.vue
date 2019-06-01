@@ -81,7 +81,7 @@ export default {
         remove (root, node, data, flag) {
         	this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/content/category/delete",
+			    url:"http://47.100.242.105:8089/content/category/delete",
 			    params: {
 			        "id":data.id
 			    }
@@ -164,7 +164,7 @@ export default {
 					if(parent){
 						this.$axios({
 						    method: 'get',
-						    url:"/cmall_manage_api/content/category/create",
+						    url:"http://47.100.242.105:8089/content/category/create",
 						    params: {
 						        "parentId":data.id,
 						        "name":childData.title
@@ -188,7 +188,7 @@ export default {
 					}else{
 						this.$axios({
 						    method: 'get',
-						    url:"/cmall_manage_api/content/category/update",
+						    url:"http://47.100.242.105:8089/content/category/update",
 						    params: {
 						        "id":data.id,
 						        "name":childData.title

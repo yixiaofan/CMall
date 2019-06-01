@@ -101,7 +101,7 @@ export default {
 			this.openModal1();
 			this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/item/param/query/itemcatid/"+data.id
+			    url:"http://47.100.242.105:8089/item/param/query/itemcatid/"+data.id
 			}).then((res)=>{
 				console.log(res);
 				if(res.data.status==200){
@@ -147,7 +147,7 @@ export default {
         loadData (item, callback) {
         	this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/item/cat/list",
+			    url:"http://47.100.242.105:8089/item/cat/list",
 			    params: {
 			        "id":item.id
 			    }
@@ -179,7 +179,7 @@ export default {
         getData(id){
         	this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/item/cat/list",
+			    url:"http://47.100.242.105:8089/item/cat/list",
 			    params: {
 			        "id":id
 			    }
@@ -269,7 +269,7 @@ export default {
 				formData.append('itemParams',itemParams);
 				this.$axios({
 				    method: 'post',
-				    url:"/cmall_manage_api/item/save",
+				    url:"http://47.100.242.105:8089/item/save",
 				    headers: {'Content-Type': 'application/json'},
 				    data: formData
 				}).then((res)=>{

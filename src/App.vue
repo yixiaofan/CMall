@@ -30,13 +30,13 @@ export default {
 		window.onload=connect;
 		function connect(){
 			if ('WebSocket' in window) {
-				ws = new WebSocket("ws://127.0.0.1:8088/websocket");
+				ws = new WebSocket("ws://47.100.242.105:8088/websocket");
 			} else if ('MozWebSocket' in window) {
-				ws = new MozWebSocket("ws://127.0.0.1:8088/websocket");
+				ws = new MozWebSocket("ws://47.100.242.105:8088/websocket");
 			} else {
 				//如果是低版本的浏览器，则用SockJS这个对象，对应了后台“sockjs/webSocketServer”这个注册器，
 				//它就是用来兼容低版本浏览器的
-				ws = new SockJS("http://127.0.0.1:8088/sockjs/websocket");
+				ws = new SockJS("http://47.100.242.105:8088/sockjs/websocket");
 			}
 			ws.onopen = function (event) {
 				console.log('open', event);
@@ -55,7 +55,7 @@ export default {
   	if(!_ticket){
   		return;
   	}
-		const postUrl = "/cmall_login_api/user/token/"+_ticket;
+		const postUrl = "http://47.100.242.105:8084/user/token/"+_ticket;
     this.$axios.post(postUrl)
       .then(res => {
         console.log(res);
@@ -71,6 +71,8 @@ export default {
 <style>
 @import "assets/font/iconfont.css";
 
+a{color: #222 !important;text-decoration: none}
+.col-xs-7,.col-xs-9{padding-left: 0px !important;padding-right: 0px !important;}
 .mycontainer{
 	padding: 0px !important;
 }
@@ -216,6 +218,7 @@ export default {
 	.outer-con .describe, .recommendation .info h3 {
     font-size: 14px;
     font-weight: 600;
+    display: block !important;
 	}
 	.goods-title, .outer-con .price {
     font-size: 14px;
@@ -480,6 +483,11 @@ export default {
 		max-width: 1000px;
 		margin: 0px auto;
 	}
+	.list .word {
+		display: block!important;
+    padding: 5px 10px;
+    overflow: hidden;
+	}
 	.nav-search {
     padding-left: 0px !important;
     max-width: 1000px;
@@ -648,7 +656,7 @@ export default {
 		background-color: white;
 	}
 	.category-content .category-list li:hover .b-category-name a{
-		color: #4c4c4c;
+		color: #4c4c4c !important;
 	}
 	.category-content .category-list li:hover .menu-in{
 		display: block;
@@ -694,7 +702,7 @@ export default {
     padding-left: 35px !important;
 	}
 	.category-content .b-category-name a {
-    color: #fff;
+    color: #fff !important;
 	}
 	.category-content .menu-item.top {
     top: 0px;
@@ -749,7 +757,7 @@ export default {
     width: auto;
     letter-spacing: 0.5px;
     line-height: 14px;
-    color: #888;
+    color: #888 !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -831,6 +839,9 @@ export default {
     position: relative;
     border: none !important;
 	}
+	.flood .text-one{
+		padding: 0px !important;
+	}
 	.flood .text-one, .flood .text-two, .flood .text-three {
     width: 20%;
     text-align: center;
@@ -841,19 +852,13 @@ export default {
     height: 400px !important;
     position: relative;
 	}
-	.list .word {
-    display: block !important;
-    padding: 20px 0 30px 10px;
-	}
 	.word .outer {
-    margin: 0 10px 10px 0;
-    float: left;
-    width: 50px;
-    height: 50px;
+    margin: 5px;
     text-align: center;
     color: #2f2f2f;
     background-color: #fff;
     border-radius: 50px;
+    display: -webkit-inline-box;
 	}
 	.word .outer .inner {
     display: table-cell;
@@ -1232,9 +1237,6 @@ export default {
 	.flood .big, .flood .list {
     height: 480px !important;
 	}
-	.list .word {
-    padding: 20px 0 30px 20px;
-	}
 	.word .outer {
     width: 57px;
     height: 57px;
@@ -1384,6 +1386,5 @@ html{font-size:16px;}
 .fl{float:left;}
 .fr{float:right;}
 body{ margin:0 auto;line-height: 1.6; min-width:320px;color:#555;background:#fff;height:100%;font-size: 12px;}
-a{color: #222;text-decoration: none}
 .router-link-active{color: red !important;}
 </style>

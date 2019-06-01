@@ -15,7 +15,7 @@ export default {
 	methods:{
 		sendMsg(){
 			var value= $("#msg").val();
-			const url = "/cmall_websocket_api/message/send?msg="+value;
+			const url = "http://47.100.242.105:8088/message/send?msg="+value;
 		    this.$axios.post(url)
 		      .then(res => {
 		        console.log(res);
@@ -26,7 +26,7 @@ export default {
 		}
 	},
 	mounted(){
-		const url = "/cmall_websocket_api/login?username=admin";
+		const url = "http://47.100.242.105:8088/login?username=admin";
 	    this.$axios.post(url)
 	      .then(res => {
 	        console.log(res);
@@ -39,13 +39,13 @@ export default {
 		let ws;
 		function connect(){
 			if ('WebSocket' in window) {
-				ws = new WebSocket("ws://127.0.0.1:8088/websocket");
+				ws = new WebSocket("ws://47.100.242.105:8088/websocket");
 			} else if ('MozWebSocket' in window) {
-				ws = new MozWebSocket("ws://127.0.0.1:8088/websocket");
+				ws = new MozWebSocket("ws://47.100.242.105:8088/websocket");
 			} else {
 				//如果是低版本的浏览器，则用SockJS这个对象，对应了后台“sockjs/webSocketServer”这个注册器，
 				//它就是用来兼容低版本浏览器的
-				ws = new SockJS("http://127.0.0.1:8088/sockjs/websocket");
+				ws = new SockJS("http://47.100.242.105:8088/sockjs/websocket");
 			}
 			ws.onopen = function (event) {
 				console.log('open', event);

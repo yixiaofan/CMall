@@ -92,7 +92,7 @@ export default {
 		  	if(!_ticket){
 		  		return;
 		  	}
-			const postUrl = "/cmall_login_api/user/logout/"+_ticket;
+			const postUrl = "http://47.100.242.105:8084/user/logout/"+_ticket;
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		        console.log(res);
@@ -129,7 +129,6 @@ i{
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1090;
 }
 .my-offcanvas-bar {
     position: fixed;

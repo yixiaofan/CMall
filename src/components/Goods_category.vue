@@ -10,11 +10,11 @@
 			<div v-show="s_flag" class="category-content">
 				<div class="category">
 					<ul class="category-list">
-						<li class="appliance js_toggle relative first" v-for="item of jsont">
+						<li class="appliance js_toggle relative first" v-for="(item,index) of jsont" :key="index">
 							<div class="category-info">
 								<h3 class="category-name b-category-name">
 									<img :src="item.img"/>
-									<a :href="'http://127.0.0.1:8080/#/search?searchWord='+item.n" class="ml-22">{{item.n}}</a>
+									<a @click="toSearch(item.n)" class="ml-22">{{item.n}}</a>
 								</h3>
 								<em>&gt;</em>
 							</div>
@@ -23,14 +23,14 @@
 									<div class="area-bg">
 										<div class="menu-srot">
 											<div class="sort-side">
-												<dl class="dl-sort" v-for="item1 of item.i">
+												<dl class="dl-sort" v-for="(item1,index1) of item.i" :key="index1">
 													<dt>
-														<a :href="'http://47.100.242.105:80/#/search?searchWord='+item1.n">
+														<a @click="toSearch(item1.n)">
                                                             <span>{{item1.n}}</span>
                                                         </a>
 													</dt>
-													<dd v-for="item2 of item1.i">
-														<a :href="'http://47.100.242.105:80/#/search?searchWord='+item2">
+													<dd v-for="(item2,index2) of item1.i" :key="index2">
+														<a @click="toSearch(item2)">
                                                             <span>{{item2}}</span>
                                                         </a>
 													</dd>
@@ -69,9 +69,15 @@ export default {
 			default:true
 		}
 	},
+	methods:{
+		toSearch(str) {
+	   		this.$router.push({path:'/search',query:{'searchWord':str}});
+          	this.$router.go(0);
+		}
+	},
 	mounted(){
 		const that=this;
-		const postUrl = "/cmall_item_api/rest/itemcat/all?callback"
+		const postUrl = "http://47.100.242.105:8081/rest/itemcat/all?callback"
 	    this.$axios.post(postUrl)
 	      .then(res => {
 	        let newData=eval(res.data.substring(4));

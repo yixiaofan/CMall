@@ -136,7 +136,7 @@ export default {
         loadData (item, callback) {
         	this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/item/cat/list",
+			    url:"http://47.100.242.105:8089/item/cat/list",
 			    params: {
 			        "id":item.id
 			    }
@@ -199,14 +199,13 @@ export default {
             	//console.log(JSON.stringify(obj));
             	jsonstr.push(obj);
             }
-            let data=JSON.stringify(jsonstr);
-            //console.log(data);
+            let paramData=JSON.stringify(jsonstr);
+            //console.log(paramData);
             this.$axios({
-			    method: 'get',
-			    url:"/cmall_manage_api/item/param/save/"+catid,
-			    params: {
-			        "paramData":data
-			    }
+			    method: 'post',
+			    url:"http://47.100.242.105:8089/item/param/save/"+catid,
+				headers: {'Content-Type': 'application/json'},
+			    data: paramData
 			}).then((res)=>{
 				console.log(res);
 				if(res.data.status==200){
@@ -238,7 +237,7 @@ export default {
         getListData(id){
         	this.$axios({
 			    method: 'get',
-			    url:"/cmall_manage_api/item/cat/list",
+			    url:"http://47.100.242.105:8089/item/cat/list",
 			    params: {
 			        "id":id
 			    }
@@ -270,7 +269,7 @@ export default {
         getData(page,rows){
 			let that=this;
 			that.loading=true;
-			const postUrl = "/cmall_manage_api/item/param/list?page="+page+"&rows="+rows;
+			const postUrl = "http://47.100.242.105:8089/item/param/list?page="+page+"&rows="+rows;
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		      	console.log(res.data);
@@ -317,7 +316,7 @@ export default {
 			}else{
 				this.$axios({
 				    method: 'get',
-				    url:"/cmall_manage_api/item/param/delete",
+				    url:"http://47.100.242.105:8089/item/param/delete",
 				    params: {
 				        "ids":myids
 				    }

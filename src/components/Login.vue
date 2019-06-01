@@ -131,14 +131,15 @@ export default {
     },
 	methods:{
 		userLogin(){
-			const postUrl = "/cmall_login_api/user/login?username="+$("#inputUserName").val()+"&password="+$("#inputPassword").val();
+			const postUrl = "http://47.100.242.105:8084/user/login?username="+$("#inputUserName").val()+"&password="+$("#inputPassword").val();
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		        console.log(res);
 		        if(res.data.status==200){
 		        	$("#loginPage").modal('hide');
+		        	this.$cookie.set("TT_TOKEN", res.data.data.password,60*60*24*7);
 		        	this.$store.commit('set_userInfo',res.data.data);
-		        	const url = "/cmall_websocket_api/login?username="+res.data.data.id;
+		        	const url = "http://47.100.242.105:8088/login?username="+res.data.data.id;
 				    this.$axios.post(url)
 				      .then(res => {
 				        console.log(res);
@@ -166,12 +167,13 @@ export default {
 					//console.log(info);
 				    this.$axios({
 					    method: 'post',
-					    url:"/cmall_login_api/user/register",
+					    url:"http://47.100.242.105:8084/user/register",
 					    headers: {'Content-Type': 'application/json'},
 					    data:user
 					}).then(res => {
 				        //console.log(res);
 				        if(res.data.status==200){
+				        	$('#registerPage').modal('hide');
 				        	this.$Message.success('注册成功');
 				        }else{
 				        	this.$Message.error('用户名、邮箱或手机号码重复！');

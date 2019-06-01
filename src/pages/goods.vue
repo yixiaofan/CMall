@@ -295,7 +295,7 @@ export default {
 			if(this.$store.state.userInfo==null){
 				$('#loginPage').modal();
 			}else{
-				const postUrl = "/cmall_cart_api/cart/add/"+this.itemId+".html?num="+this.number;
+				const postUrl = "http://47.100.242.105:8085/cart/add/"+this.itemId+".html?num="+this.number;
 			    this.$axios.post(postUrl)
 			      .then(res => {
 			        this.$router.push({path:'/buy'});
@@ -309,7 +309,7 @@ export default {
 		changePage(page){
         	this.$axios({
 			    method: 'post',
-			    url:"/cmall_review_api/review/list?itemid="+this.itemId+"&page="+page+"&rows=10",
+			    url:"http://47.100.242.105:8087/review/list?itemid="+this.itemId+"&page="+page+"&rows=10",
 			}).then(res => {
 		        //console.log(res.data.rows);
 		        this.total=res.data.total;
@@ -334,7 +334,7 @@ export default {
 		if(this.$route.query.itemId!=null){
 			this.itemId=this.$route.query.itemId;
 		}
-		let postUrl = "/cmall_item_api/item?id="+this.itemId;
+		let postUrl = "http://47.100.242.105:8081/item?id="+this.itemId;
 	    this.$axios.post(postUrl)
 	      .then(res => {
 	      	let newData=eval(res.data.substring(4));
@@ -345,7 +345,7 @@ export default {
 	      .catch(error => {
 	        console.log(error);
 	      });
-	    postUrl = "/cmall_item_api/item/desc/"+this.itemId;
+	    postUrl = "http://47.100.242.105:8081/item/desc/"+this.itemId;
 	    this.$axios.post(postUrl)
 	      .then(res => {
 	        console.log(res);
@@ -354,7 +354,7 @@ export default {
 	      .catch(error => {
 	        console.log(error);
 	      });
-	    postUrl = "/cmall_item_api/item/param/"+this.itemId;
+	    postUrl = "http://47.100.242.105:8081/item/param/"+this.itemId;
 	    this.$axios.post(postUrl)
 	      .then(res => {
 	        console.log(res);

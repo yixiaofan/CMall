@@ -1,6 +1,7 @@
 <template lang="html">
 	<div class="searchGoods">
 		<AdminTable method="changeTable" 
+			ref="mychild"
 			@changeTable="changeTable" 
 			@changeStatus="changeStatus" 
 			@addGoods="addGoods"
@@ -107,7 +108,7 @@ export default {
 		getData(page,rows){
 			let that=this;
 			that.loading=true;
-			const postUrl = "/cmall_manage_api/item/list?page="+page+"&rows="+rows;
+			const postUrl = "http://47.100.242.105:8089/item/list?page="+page+"&rows="+rows;
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		      	//console.log(res.data);
@@ -139,6 +140,8 @@ export default {
 		},
 		changeTable(obj){
 			//console.log("parent");
+			//清空复选框状态
+			this.$refs.mychild.ids = [];
 			this.params=obj;
 			this.getData(this.params.page,this.params.rows);
 		},
@@ -146,6 +149,8 @@ export default {
 			let pTableData=this.pTableData;
 			let myids=ids;
 			myids=myids.join(",");
+			//清空复选框状态
+			this.$refs.mychild.ids = [];
 			console.log(myids);
 			if(myids.length==0){
 				this.$Modal.error({
@@ -163,7 +168,7 @@ export default {
 				}
 				this.$axios({
 				    method: 'get',
-				    url:"/cmall_manage_api/"+str,
+				    url:"http://47.100.242.105:8089/"+str,
 				    params: {
 				        "ids":myids
 				    }

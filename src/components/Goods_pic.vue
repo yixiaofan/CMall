@@ -64,7 +64,7 @@ export default {
 
 	    	this.$axios({
 			    method: 'post',
-			    url:"/cmall_manage_api/pic/upload",
+			    url:"http://47.100.242.105:8089/pic/upload",
 			    //headers: {'Content-Type': 'multipart/form-data'},
 //			    params: {
 //			        "uploadFile":mydata

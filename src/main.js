@@ -15,6 +15,8 @@ import MySpan from './components/myspan'
 import rightMenu from 'vue-right-menu'
 import 'vue-right-menu/src/index.css'
 
+Axios.defaults.withCredentials=true;
+
 Vue.use(rightMenu)
 Vue.use(MySpan)
 Vue.use(iView)

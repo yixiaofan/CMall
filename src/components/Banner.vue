@@ -63,7 +63,7 @@ export default {
 			}
 		},
 		getAdImg(){
-			let postUrl="/cmall_portal_api/showBigPic"
+			let postUrl="http://47.100.242.105:8082/showBigPic"
 			this.$axios.post(postUrl)
 			  .then((res)=>{
 				console.log(res);

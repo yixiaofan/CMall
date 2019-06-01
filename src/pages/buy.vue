@@ -120,7 +120,7 @@ export default {
 			}else if(flag=="asc"){
 				cart.num++;
 			}
-			const postUrl = "/cmall_cart_api/cart/update/num/"+cart.id+"/"+cart.num;
+			const postUrl = "http://47.100.242.105:8085/cart/update/num/"+cart.id+"/"+cart.num;
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		        console.log(res);
@@ -142,7 +142,7 @@ export default {
 				return false;
 			}
 			cart.num=num;
-			const postUrl = "/cmall_cart_api/cart/update/num/"+cart.id+"/"+cart.num;
+			const postUrl = "http://47.100.242.105:8085/cart/update/num/"+cart.id+"/"+cart.num;
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		        console.log(res);
@@ -193,7 +193,7 @@ export default {
 			this.computeItemNum(this.cartList);
 		},
 		deleteItem(cart){
-			const postUrl = "/cmall_cart_api/cart/delete/"+cart.id;
+			const postUrl = "http://47.100.242.105:8085/cart/delete/"+cart.id;
 		    this.$axios.post(postUrl)
 		      .then(res => {
 		        console.log(res);
@@ -221,7 +221,7 @@ export default {
 				}
 			}
 			console.log(ids);
-			const postUrl = "/cmall_order_api/order/order-cart?"+ids;
+			const postUrl = "http://47.100.242.105:8086/order/order-cart?"+ids;
 	    	this.$axios.get(postUrl)
 			.then((res)=>{
 				console.log(res);
@@ -233,7 +233,7 @@ export default {
 		}
 	},
 	mounted(){
-		const postUrl = "/cmall_cart_api/cart/cart";
+		const postUrl = "http://47.100.242.105:8085/cart/cart";
 	    this.$axios.post(postUrl)
 	      .then(res => {
 	        console.log(res);
